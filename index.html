@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>けいさん · Kawaii Keisanki</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700&family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+
+<style>
+/* ══════════════════════════════════════
+   LEVANTER THEME — DREAMY SUNSET
+══════════════════════════════════════ */
+:root {
+  --bg-start:    #E0C3FC;
+  --bg-end:      #FBC2EB;
+  --bg-mid:      #EDD5F8;
+  --op-btn:      #A18CD1;
+  --op-hover:    #8B72BE;
+  --text-main:   #4A4A4A;
+  --text-sub:    #8B6B8B;
+  --text-light:  #B89EC0;
+  --glass-bg:    rgba(255,255,255,0.55);
+  --glass-border:rgba(255,255,255,0.75);
+  --glass-hover: rgba(255,255,255,0.72);
+  --card-bg:     rgba(255,255,255,0.45);
+  --card-border: rgba(255,255,255,0.7);
+  --pink-accent: #E8619D;
+  --pink-soft:   #F0A0C8;
+  --lavender:    #C9A8F5;
+  --display-bg:  rgba(255,220,240,0.6);
+  --radius:      18px;
+  --radius-sm:   12px;
+  --shadow-float: 0 8px 32px rgba(161,140,209,0.25), 0 2px 8px rgba(232,97,157,0.12);
+  --shadow-btn:   0 4px 18px rgba(161,140,209,0.3), 0 1px 4px rgba(255,255,255,0.5);
+  --shadow-press: 0 2px 8px rgba(161,140,209,0.2);
+}
+
+/* DARK MODE */
+[data-theme="dark"] {
+  --bg-start:    #2D1B4E;
+  --bg-end:      #4A1942;
+  --bg-mid:      #3A1A48;
+  --op-btn:      #7B5EA7;
+  --op-hover:    #9B7EC7;
+  --text-main:   #F0E0FF;
+  --text-sub:    #C8A8E0;
+  --text-light:  #9070A0;
+  --glass-bg:    rgba(255,255,255,0.07);
+  --glass-border:rgba(255,255,255,0.15);
+  --glass-hover: rgba(255,255,255,0.12);
+  --card-bg:     rgba(255,255,255,0.06);
+  --card-border: rgba(255,255,255,0.12);
+  --pink-accent: #F472B6;
+  --pink-soft:   #C879A8;
+  --lavender:    #A78BFA;
+  --display-bg:  rgba(80,30,90,0.5);
+  --shadow-float: 0 8px 32px rgba(0,0,0,0.4);
+  --shadow-btn:   0 4px 18px rgba(0,0,0,0.3);
+  --shadow-press: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { overflow-x: hidden; }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-mid) 50%, var(--bg-end) 100%);
+  color: var(--text-main);
+  transition: background .5s, color .4s;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ── Animated Dot Grid ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: radial-gradient(circle, rgba(161,140,209,0.25) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+  opacity: .55;
+}
+
+/* ── Floating sakura petals ── */
+.petal {
+  position: fixed; pointer-events: none; z-index: 0;
+  font-size: 1rem; opacity: 0;
+  animation: fall linear infinite;
+}
+@keyframes fall {
+  0%   { transform: translateY(-60px) rotate(0deg); opacity: .7; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* ── Dreamy blobs ── */
+.blob {
+  position: fixed; border-radius: 50%;
+  filter: blur(80px); pointer-events: none; z-index: 0;
+  opacity: .4; transition: opacity .5s;
+}
+.blob-1 { width: 500px; height: 500px; top: -120px; left: -100px; background: rgba(224,195,252,.6); }
+.blob-2 { width: 400px; height: 400px; bottom: -100px; right: -80px; background: rgba(251,194,235,.6); }
+.blob-3 { width: 300px; height: 300px; top: 40%; left: 60%; background: rgba(201,168,245,.4); }
+
+/* ══════════════════════════════════════
+   TOPBAR
+══════════════════════════════════════ */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  background: rgba(255,255,255,.25);
+  border-bottom: 1px solid rgba(255,255,255,.5);
+  padding: 0 28px;
+  height: 52px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+[data-theme="dark"] .topbar {
+  background: rgba(40,20,60,.35);
+  border-bottom-color: rgba(255,255,255,.1);
+}
+.topbar-brand {
+  display: flex; align-items: center; gap: 10px;
+}
+.topbar-jp {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 500; font-size: .88rem;
+  color: var(--text-sub); letter-spacing: 1px;
+}
+.topbar-dot { color: var(--text-light); }
+.topbar-badge {
+  background: rgba(255,255,255,.5);
+  border: 1px solid rgba(255,255,255,.7);
+  border-radius: 20px; padding: 3px 12px;
+  font-size: .65rem; font-family: 'Noto Sans JP', sans-serif;
+  color: var(--text-sub); letter-spacing: .5px;
+  backdrop-filter: blur(10px);
+}
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+.icon-btn {
+  width: 36px; height: 36px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .9rem; color: var(--text-sub);
+  backdrop-filter: blur(10px);
+  transition: all .2s; box-shadow: var(--shadow-btn);
+}
+.icon-btn:hover { background: var(--glass-hover); color: var(--pink-accent); transform: scale(1.08); }
+.history-pill {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px; padding: 7px 16px;
+  font-size: .72rem; font-family: 'Noto Sans JP', sans-serif;
+  color: var(--text-sub); cursor: pointer;
+  backdrop-filter: blur(10px); transition: all .2s;
+  display: flex; align-items: center; gap: 6px;
+  box-shadow: var(--shadow-btn);
+}
+.history-pill:hover { background: var(--glass-hover); color: var(--pink-accent); }
+
+/* ══════════════════════════════════════
+   HERO
+══════════════════════════════════════ */
+.hero {
+  text-align: center;
+  padding: 52px 20px 32px;
+  position: relative; z-index: 1;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
+  font-weight: 900;
+  color: var(--text-main);
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+.hero-title .pink { color: var(--pink-accent); }
+.hero-sub {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: .88rem; color: var(--text-light);
+  letter-spacing: 3px; margin-top: 10px;
+}
+.hero-sub span { margin: 0 6px; }
+
+/* ══════════════════════════════════════
+   MODE TABS
+══════════════════════════════════════ */
+.mode-tabs-wrap {
+  display: flex; justify-content: center;
+  padding: 0 20px 28px;
+  position: relative; z-index: 1;
+}
+.mode-tabs {
+  background: rgba(255,255,255,.45);
+  border: 1px solid rgba(255,255,255,.7);
+  border-radius: 50px; padding: 5px;
+  backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-float);
+  display: flex; gap: 2px; flex-wrap: wrap; justify-content: center;
+}
+[data-theme="dark"] .mode-tabs {
+  background: rgba(255,255,255,.07);
+  border-color: rgba(255,255,255,.12);
+}
+.tab-btn {
+  background: transparent; border: none;
+  border-radius: 50px; padding: 9px 20px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: .75rem; color: var(--text-sub);
+  cursor: pointer; transition: all .25s;
+  display: flex; align-items: center; gap: 7px;
+  white-space: nowrap; letter-spacing: .3px;
+}
+.tab-btn i { font-size: .85rem; }
+.tab-btn:hover { color: var(--pink-accent); }
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--pink-accent), var(--op-btn));
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(232,97,157,.4), 0 1px 4px rgba(0,0,0,.1);
+}
+
+/* ══════════════════════════════════════
+   MAIN LAYOUT
+══════════════════════════════════════ */
+.main-wrap {
+  max-width: 1100px; margin: 0 auto;
+  padding: 0 20px 60px;
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 20px;
+  position: relative; z-index: 1;
+  align-items: start;
+}
+@media (max-width: 860px) { .main-wrap { grid-template-columns: 1fr; } }
+
+/* ══════════════════════════════════════
+   CALCULATOR CARD
+══════════════════════════════════════ */
+.calc-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 20px;
+  backdrop-filter: blur(24px) saturate(1.3);
+  -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  box-shadow: var(--shadow-float);
+  transition: background .4s, border .4s;
+}
+.calc-card-title {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: .62rem; color: var(--text-light);
+  letter-spacing: 2px; margin-bottom: 2px;
+}
+.calc-card-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; font-weight: 700;
+  color: var(--pink-accent); margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.sakura-icon { font-size: 1rem; opacity: .7; }
+
+/* ── DISPLAY ── */
+.display-wrap {
+  background: var(--display-bg);
+  border: 1px solid rgba(255,255,255,.65);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px 14px;
+  margin-bottom: 14px;
+  min-height: 100px;
+  display: flex; flex-direction: column;
+  align-items: flex-end; justify-content: flex-end;
+  gap: 4px;
+  box-shadow: inset 0 2px 12px rgba(232,97,157,.08), 0 2px 8px rgba(255,255,255,.4);
+  position: relative; overflow: hidden;
+}
+.display-wrap::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.8), transparent);
+}
+.display-expr {
+  font-family: 'Montserrat', sans-serif;
+  font-size: .72rem; color: var(--text-light);
+  min-height: 18px; word-break: break-all; text-align: right;
+}
+.display-main {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem; font-weight: 700;
+  color: var(--text-main); line-height: 1;
+  word-break: break-all; text-align: right;
+  transition: font-size .1s;
+}
+.display-main.sm { font-size: 2rem; }
+.display-main.xs { font-size: 1.4rem; }
+.display-op-tag {
+  position: absolute; top: 10px; left: 12px;
+  background: linear-gradient(135deg, var(--pink-accent), var(--op-btn));
+  color: #fff; font-size: .58rem;
+  padding: 3px 9px; border-radius: 20px;
+  font-family: 'Montserrat', sans-serif; font-weight: 600;
+  letter-spacing: .5px; display: none;
+}
+.display-op-tag.show { display: block; animation: popIn .2s ease; }
+@keyframes popIn { from{transform:scale(.7);opacity:0} to{transform:scale(1);opacity:1} }
+
+/* ── BUTTONS ── */
+.btn-grid { display: grid; gap: 8px; }
+.g5 { grid-template-columns: repeat(5, 1fr); }
+.g4 { grid-template-columns: repeat(4, 1fr); }
+
+/* Base button style — glassmorphism floating */
+.cb {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  aspect-ratio: 1;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600; font-size: .82rem;
+  color: var(--text-main);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  box-shadow: var(--shadow-btn);
+  transition: all .18s cubic-bezier(.4,0,.2,1);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+.cb::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 45%; border-radius: 50% 50% 0 0;
+  background: linear-gradient(to bottom, rgba(255,255,255,.4), transparent);
+  pointer-events: none;
+}
+.cb:hover {
+  background: var(--glass-hover);
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 10px 28px rgba(161,140,209,.4), 0 2px 8px rgba(255,255,255,.4);
+}
+.cb:active {
+  transform: scale(.93) translateY(0) !important;
+  box-shadow: var(--shadow-press) !important;
+}
+
+/* Number buttons */
+.cb.num { background: rgba(255,255,255,.58); border-color: rgba(255,255,255,.8); }
+.cb.num:hover { background: rgba(255,255,255,.78); }
+
+/* Operator buttons — purple sunset */
+.cb.op {
+  background: linear-gradient(135deg, rgba(161,140,209,.75), rgba(169,120,210,.65));
+  border-color: rgba(201,168,245,.5);
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(80,40,100,.3);
+}
+.cb.op:hover {
+  background: linear-gradient(135deg, var(--op-btn), var(--op-hover));
+  box-shadow: 0 8px 24px rgba(161,140,209,.55);
+}
+
+/* Function buttons — pink soft */
+.cb.fn {
+  background: rgba(248,185,220,.4);
+  border-color: rgba(255,180,210,.5);
+  color: var(--pink-accent);
+  font-size: .72rem;
+}
+.cb.fn:hover {
+  background: rgba(248,185,220,.65);
+  box-shadow: 0 8px 24px rgba(232,97,157,.3);
+  color: var(--pink-accent);
+}
+
+/* AC — red petal */
+.cb.ac {
+  background: rgba(255,150,170,.35);
+  border-color: rgba(255,170,185,.5);
+  color: #E85878;
+}
+.cb.ac:hover { background: rgba(255,130,155,.55); box-shadow: 0 8px 24px rgba(255,100,130,.3); }
+
+/* Backspace */
+.cb.back {
+  background: rgba(255,200,160,.35);
+  border-color: rgba(255,210,175,.5);
+  color: #D4822A;
+}
+.cb.back:hover { background: rgba(255,190,140,.55); }
+
+/* Equals — gradient pink */
+.cb.eq {
+  background: linear-gradient(135deg, var(--pink-accent), #D4579A);
+  border: none;
+  color: #fff; font-size: 1.3rem;
+  box-shadow: 0 6px 22px rgba(232,97,157,.5), 0 2px 8px rgba(255,255,255,.3);
+}
+.cb.eq:hover {
+  transform: translateY(-4px) scale(1.06);
+  box-shadow: 0 12px 32px rgba(232,97,157,.6);
+  filter: brightness(1.08);
+}
+
+/* Logic buttons */
+.cb.logic {
+  background: rgba(169,120,210,.3);
+  border-color: rgba(201,168,245,.5);
+  color: var(--op-btn);
+  font-size: .68rem;
+}
+.cb.logic:hover { background: rgba(169,120,210,.5); }
+
+/* Wide buttons */
+.cb.wide { border-radius: 50px; aspect-ratio: unset; padding: 0 16px; height: 52px; }
+.cb.span2 { grid-column: span 2; }
+.cb.span3 { grid-column: span 3; }
+
+/* ── SECTION DIVIDER ── */
+.sec-div {
+  display: flex; align-items: center; gap: 8px;
+  margin: 10px 0 8px;
+}
+.sec-div-line { flex: 1; height: 1px; background: rgba(255,255,255,.4); }
+.sec-div-text {
+  font-size: .58rem; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--text-light);
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+/* ══════════════════════════════════════
+   RIGHT PANEL
+══════════════════════════════════════ */
+.right-panel {
+  display: flex; flex-direction: column; gap: 16px;
+}
+.panel-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  backdrop-filter: blur(24px) saturate(1.3);
+  -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  box-shadow: var(--shadow-float);
+  transition: background .4s;
+}
+.panel-card-title {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: .6rem; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--text-light); margin-bottom: 4px;
+}
+.panel-card-sub {
+  font-family: 'Playfair Display', serif;
+  font-size: .88rem; color: var(--pink-accent);
+  margin-bottom: 14px; font-style: italic;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+/* History list */
+.hist-empty {
+  font-family: 'Montserrat', sans-serif;
+  font-size: .78rem; color: var(--text-light);
+  padding: 8px 0;
+}
+.hist-list { display: flex; flex-direction: column; gap: 8px; max-height: 320px; overflow-y: auto; }
+.hist-list::-webkit-scrollbar { width: 4px; }
+.hist-list::-webkit-scrollbar-thumb { background: rgba(161,140,209,.4); border-radius: 4px; }
+.hist-item {
+  background: rgba(255,255,255,.4);
+  border: 1px solid rgba(255,255,255,.6);
+  border-radius: 12px; padding: 10px 14px;
+  cursor: pointer; transition: all .2s;
+  backdrop-filter: blur(8px);
+}
+[data-theme="dark"] .hist-item { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.12); }
+.hist-item:hover { transform: translateX(4px); background: rgba(255,255,255,.6); box-shadow: var(--shadow-btn); }
+.hist-type {
+  display: inline-block; font-size: .52rem; font-weight: 700;
+  padding: 2px 8px; border-radius: 20px; margin-bottom: 4px;
+  font-family: 'Montserrat', sans-serif; letter-spacing: .5px;
+}
+.ht-arith { background: rgba(232,97,157,.15); color: var(--pink-accent); }
+.ht-logic { background: rgba(161,140,209,.2); color: var(--op-btn); }
+.ht-conv  { background: rgba(160,200,220,.2); color: #5BA8C0; }
+.ht-bonus { background: rgba(210,170,240,.2); color: var(--lavender); }
+.hist-expr { font-size: .7rem; color: var(--text-light); font-family: 'Montserrat', sans-serif; }
+.hist-res  { font-size: .92rem; font-weight: 700; color: var(--text-main); font-family: 'Playfair Display', serif; }
+.hist-time { font-size: .58rem; color: var(--text-light); margin-top: 2px; font-family: 'Montserrat', sans-serif; }
+.hist-clear {
+  background: rgba(255,150,170,.2); border: 1px solid rgba(255,150,170,.35);
+  border-radius: 20px; padding: 5px 14px; font-size: .65rem;
+  color: #E85878; cursor: pointer; transition: all .2s;
+  font-family: 'Montserrat', sans-serif;
+}
+.hist-clear:hover { background: rgba(255,130,155,.35); }
+
+/* ── STEP CARD ── */
+.step-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: var(--shadow-float);
+  display: none;
+  animation: fadeUp .25s ease;
+}
+.step-card.show { display: block; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+.step-formula {
+  font-family: 'Playfair Display', serif;
+  font-size: .88rem; color: var(--pink-accent);
+  font-style: italic; margin-bottom: 10px; font-weight: 700;
+}
+.step-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,.3);
+  font-size: .78rem; animation: fadeRow .2s ease;
+}
+@keyframes fadeRow { from{opacity:0;transform:translateX(-5px)} to{opacity:1;transform:none} }
+.step-row:last-child { border-bottom: none; }
+.step-num {
+  min-width: 22px; height: 22px;
+  background: linear-gradient(135deg, var(--pink-accent), var(--op-btn));
+  border-radius: 50%; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .6rem; font-weight: 700; flex-shrink: 0;
+}
+.step-txt { color: var(--text-sub); line-height: 1.6; font-family: 'Montserrat', sans-serif; }
+.step-val { color: var(--op-btn); font-weight: 700; }
+
+/* ══════════════════════════════════════
+   PANE CONTENT
+══════════════════════════════════════ */
+.pane { display: none; }
+.pane.active { display: block; }
+
+/* ── Conversion ── */
+.fi {
+  width: 100%;
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(255,255,255,.75);
+  border-radius: 12px; padding: 10px 14px;
+  font-family: 'Montserrat', sans-serif; font-size: .82rem;
+  color: var(--text-main); outline: none;
+  backdrop-filter: blur(10px); transition: all .2s;
+}
+[data-theme="dark"] .fi { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.15); color: var(--text-main); }
+.fi:focus { border-color: var(--pink-accent); box-shadow: 0 0 0 3px rgba(232,97,157,.15); }
+.fs {
+  width: 100%;
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(255,255,255,.75);
+  border-radius: 12px; padding: 9px 12px;
+  font-family: 'Montserrat', sans-serif; font-size: .78rem;
+  color: var(--text-main); cursor: pointer; outline: none;
+  backdrop-filter: blur(10px); transition: all .2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%23E8619D' d='M5 7L0 2h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+  padding-right: 28px;
+}
+[data-theme="dark"] .fs { background-color: rgba(255,255,255,.08); border-color: rgba(255,255,255,.15); color: var(--text-main); }
+.fs:focus { border-color: var(--pink-accent); }
+.conv-lbl { font-size: .62rem; color: var(--text-light); font-family: 'Noto Sans JP', sans-serif; letter-spacing: 1px; margin-bottom: 4px; }
+.res-box {
+  background: rgba(255,220,240,.5);
+  border: 1px solid rgba(255,190,220,.6);
+  border-radius: 12px; padding: 12px 14px;
+  font-family: 'Playfair Display', serif;
+  font-size: .95rem; font-weight: 700;
+  color: var(--pink-accent); min-height: 46px;
+  display: flex; align-items: center; word-break: break-all;
+  backdrop-filter: blur(10px);
+}
+[data-theme="dark"] .res-box { background: rgba(80,30,90,.4); border-color: rgba(161,140,209,.3); }
+.conv-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.conv-arrow { text-align: center; color: var(--lavender); font-size: 1.1rem; padding: 4px 0; }
+.step-inline {
+  background: rgba(255,255,255,.35);
+  border-left: 3px solid var(--pink-accent);
+  border-radius: 0 10px 10px 0; padding: 10px 14px;
+  margin-top: 12px; font-size: .76rem; color: var(--text-sub);
+  font-family: 'Montserrat', sans-serif; line-height: 1.7; display: none;
+}
+.step-inline.show { display: block; }
+.step-inline b { color: var(--pink-accent); }
+
+/* Bonus cards */
+.bonus-row { display: flex; gap: 8px; margin-top: 8px; }
+.bonus-btn {
+  background: linear-gradient(135deg, var(--pink-accent), var(--op-btn));
+  border: none; color: #fff; border-radius: 12px;
+  padding: 10px 18px; font-family: 'Montserrat', sans-serif;
+  font-size: .75rem; cursor: pointer; font-weight: 700;
+  box-shadow: 0 4px 16px rgba(232,97,157,.35);
+  transition: all .2s; white-space: nowrap;
+}
+.bonus-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,97,157,.5); filter: brightness(1.05); }
+.bonus-res {
+  background: rgba(255,255,255,.4);
+  border: 1px solid rgba(255,255,255,.6);
+  border-radius: 12px; padding: 12px 14px; margin-top: 10px;
+  font-size: .78rem; color: var(--text-sub); line-height: 1.8;
+  font-family: 'Montserrat', sans-serif; min-height: 52px;
+  word-break: break-all;
+}
+.bonus-res .v  { color: var(--op-btn); font-weight: 700; }
+.bonus-res .vp { color: var(--pink-accent); font-weight: 700; }
+
+/* toast */
+.toast-wrap {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  z-index: 9999; display: none;
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(255,255,255,.9);
+  border-radius: 50px; padding: 10px 22px;
+  font-size: .78rem; color: var(--text-main);
+  backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-float);
+  font-family: 'Montserrat', sans-serif;
+  animation: toastPop .3s ease;
+}
+[data-theme="dark"] .toast-wrap { background: rgba(50,20,70,.75); border-color: rgba(255,255,255,.15); color: var(--text-main); }
+@keyframes toastPop { from{transform:translateX(-50%) translateY(16px);opacity:0} to{transform:translateX(-50%) translateY(0);opacity:1} }
+.toast-wrap.show { display: block; }
+</style>
+</head>
+<body>
+
+<!-- ── Blobs ── -->
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<!-- ── Sakura petals ── -->
+<div class="petal" style="left:5%;animation-duration:8s;animation-delay:0s;font-size:1.1rem">🌸</div>
+<div class="petal" style="left:20%;animation-duration:11s;animation-delay:2s;font-size:.8rem">🌸</div>
+<div class="petal" style="left:40%;animation-duration:9s;animation-delay:4s;font-size:1rem">🌸</div>
+<div class="petal" style="left:60%;animation-duration:12s;animation-delay:1s;font-size:.9rem">🌸</div>
+<div class="petal" style="left:78%;animation-duration:10s;animation-delay:3s;font-size:1.1rem">🌸</div>
+<div class="petal" style="left:90%;animation-duration:8.5s;animation-delay:5s;font-size:.75rem">🌸</div>
+<div class="petal" style="left:33%;animation-duration:13s;animation-delay:6s;font-size:.85rem">🌸</div>
+<div class="petal" style="left:55%;animation-duration:9.5s;animation-delay:7s;font-size:1rem">🌸</div>
+
+<!-- ══ TOPBAR ══ -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <span class="topbar-jp">けいさん</span>
+    <span class="topbar-dot">·</span>
+    <span class="topbar-jp" style="font-weight:300">Pro</span>
+    <span class="topbar-badge">ペンガンタル プログラミング</span>
+  </div>
+  <div class="topbar-right">
+    <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">
+      <i class="bi bi-moon-stars-fill" id="themeIco"></i>
+    </button>
+    <button class="history-pill" onclick="openHistTab()">
+      <i class="bi bi-clock-history"></i> りれき — Riwayat
+    </button>
+  </div>
+</header>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <h1 class="hero-title">Kawaii — <span class="pink">Keisanki</span></h1>
+  <p class="hero-sub">
+    <span>さんじゅつ</span>·
+    <span>ろんり</span>·
+    <span>へんかん</span>
+  </p>
+</section>
+
+<!-- ══ MODE TABS ══ -->
+<div class="mode-tabs-wrap">
+  <div class="mode-tabs" id="modeTabs">
+    <button class="tab-btn active" onclick="switchMode('standar',this)"><i class="bi bi-grid-3x3-gap-fill"></i> かんたん Standar</button>
+    <button class="tab-btn" onclick="switchMode('arith',this)"><i class="bi bi-calculator"></i> さんじゅつ Aritmatika</button>
+    <button class="tab-btn" onclick="switchMode('logic',this)"><i class="bi bi-cpu"></i> ろんり Logika</button>
+    <button class="tab-btn" onclick="switchMode('henkan',this)"><i class="bi bi-arrow-left-right"></i> へんかん Transformasi</button>
+    <button class="tab-btn" onclick="switchMode('bonus',this)"><i class="bi bi-stars"></i> とくべつ Fitur Lainnya</button>
+  </div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div class="main-wrap">
+
+  <!-- LEFT: CALCULATOR -->
+  <div>
+    <div class="calc-card" id="calcCard">
+      <div class="calc-card-title" id="cardJpTitle">かんたんけいさんき</div>
+      <div class="calc-card-name">
+        <span id="cardTitle">Kalkulator Standar</span>
+        <span class="sakura-icon">🌸</span>
+      </div>
+
+      <!-- DISPLAY -->
+      <div class="display-wrap" id="displayWrap">
+        <div class="display-op-tag" id="opTag"></div>
+        <div class="display-expr" id="dExpr"></div>
+        <div class="display-main" id="dMain">0</div>
+      </div>
+
+      <!-- ═ STANDAR PANE ═ -->
+      <div class="pane active" id="pane-standar">
+        <div class="btn-grid g4">
+          <button class="cb ac" onclick="clearAll()">AC</button>
+          <button class="cb fn" onclick="applyFn('negate')">±</button>
+          <button class="cb fn" onclick="applyFn('pct')">%</button>
+          <button class="cb op" onclick="inputOp('/')">÷</button>
+
+          <button class="cb num" onclick="inputDigit('7')">7</button>
+          <button class="cb num" onclick="inputDigit('8')">8</button>
+          <button class="cb num" onclick="inputDigit('9')">9</button>
+          <button class="cb op"  onclick="inputOp('*')">×</button>
+
+          <button class="cb num" onclick="inputDigit('4')">4</button>
+          <button class="cb num" onclick="inputDigit('5')">5</button>
+          <button class="cb num" onclick="inputDigit('6')">6</button>
+          <button class="cb op"  onclick="inputOp('-')">−</button>
+
+          <button class="cb num" onclick="inputDigit('1')">1</button>
+          <button class="cb num" onclick="inputDigit('2')">2</button>
+          <button class="cb num" onclick="inputDigit('3')">3</button>
+          <button class="cb op"  onclick="inputOp('+')">+</button>
+
+          <button class="cb back span2" onclick="backspace()"><i class="bi bi-backspace-fill"></i></button>
+          <button class="cb num"  onclick="inputDot()">.</button>
+          <button class="cb eq"   onclick="calculate()">=</button>
+        </div>
+        <!-- Zero button full width -->
+        <div style="margin-top:8px">
+          <button class="cb num wide" style="width:100%;border-radius:50px;aspect-ratio:unset;height:52px" onclick="inputDigit('0')">0</button>
+        </div>
+      </div>
+
+      <!-- ═ ARITMATIKA PANE ═ -->
+      <div class="pane" id="pane-arith">
+        <div class="sec-div"><div class="sec-div-line"></div><span class="sec-div-text">Fungsi Ilmiah</span><div class="sec-div-line"></div></div>
+        <div class="btn-grid g5" style="margin-bottom:8px">
+          <button class="cb fn" onclick="applyFn('sin')" style="font-size:.7rem">sin</button>
+          <button class="cb fn" onclick="applyFn('cos')" style="font-size:.7rem">cos</button>
+          <button class="cb fn" onclick="applyFn('tan')" style="font-size:.7rem">tan</button>
+          <button class="cb fn" onclick="applyFn('log')" style="font-size:.7rem">log</button>
+          <button class="cb fn" onclick="applyFn('ln')"  style="font-size:.7rem">ln</button>
+          <button class="cb fn" onclick="applyFn('sqrt')" style="font-size:.7rem">√x</button>
+          <button class="cb fn" onclick="applyFn('cbrt')" style="font-size:.7rem">∛x</button>
+          <button class="cb fn" onclick="applyFn('sq')"  style="font-size:.7rem">x²</button>
+          <button class="cb fn" onclick="applyFn('inv')" style="font-size:.7rem">1/x</button>
+          <button class="cb fn" onclick="applyFn('abs')" style="font-size:.7rem">|x|</button>
+        </div>
+        <div class="sec-div"><div class="sec-div-line"></div><span class="sec-div-text">Operasi</span><div class="sec-div-line"></div></div>
+        <div class="btn-grid g5">
+          <button class="cb ac"   onclick="clearAll()">AC</button>
+          <button class="cb back" onclick="backspace()"><i class="bi bi-backspace-fill"></i></button>
+          <button class="cb fn"   onclick="inputOp('%')" style="font-size:.7rem">MOD</button>
+          <button class="cb fn"   onclick="inputOp('//')" style="font-size:.7rem">⌊÷⌋</button>
+          <button class="cb op"   onclick="inputOp('/')">÷</button>
+
+          <button class="cb fn"   onclick="inputOp('**')" style="font-size:.7rem">xʸ</button>
+          <button class="cb num"  onclick="inputDigit('7')">7</button>
+          <button class="cb num"  onclick="inputDigit('8')">8</button>
+          <button class="cb num"  onclick="inputDigit('9')">9</button>
+          <button class="cb op"   onclick="inputOp('*')">×</button>
+
+          <button class="cb fn"   onclick="applyFn('negate')" style="font-size:.75rem">±</button>
+          <button class="cb num"  onclick="inputDigit('4')">4</button>
+          <button class="cb num"  onclick="inputDigit('5')">5</button>
+          <button class="cb num"  onclick="inputDigit('6')">6</button>
+          <button class="cb op"   onclick="inputOp('-')">−</button>
+
+          <button class="cb fn"   onclick="applyFn('pct')" style="font-size:.75rem">%</button>
+          <button class="cb num"  onclick="inputDigit('1')">1</button>
+          <button class="cb num"  onclick="inputDigit('2')">2</button>
+          <button class="cb num"  onclick="inputDigit('3')">3</button>
+          <button class="cb op"   onclick="inputOp('+')">+</button>
+
+          <button class="cb fn"   onclick="inputDigit('(')" style="font-size:.75rem">(</button>
+          <button class="cb num span2 wide" onclick="inputDigit('0')" style="grid-column:span 2;border-radius:50px;aspect-ratio:unset;height:52px">0</button>
+          <button class="cb num"  onclick="inputDot()">.</button>
+          <button class="cb eq"   onclick="calculate()">=</button>
+        </div>
+      </div>
+
+      <!-- ═ LOGIKA PANE ═ -->
+      <div class="pane" id="pane-logic">
+        <p style="font-size:.72rem;color:var(--text-light);font-family:'Montserrat',sans-serif;margin-bottom:12px;text-align:center">
+          Masukkan A → pilih operasi → masukkan B → tekan =
+        </p>
+        <div class="btn-grid g4">
+          <button class="cb ac span2" onclick="clearAll()">AC</button>
+          <button class="cb back" onclick="backspace()"><i class="bi bi-backspace-fill"></i></button>
+          <button class="cb fn"   onclick="applyFn('negate')" style="font-size:.72rem">±</button>
+
+          <button class="cb logic span2" onclick="inputOp('AND')">AND</button>
+          <button class="cb logic span2" onclick="inputOp('OR')">OR</button>
+
+          <button class="cb num"   onclick="inputDigit('7')">7</button>
+          <button class="cb num"   onclick="inputDigit('8')">8</button>
+          <button class="cb num"   onclick="inputDigit('9')">9</button>
+          <button class="cb logic" onclick="inputOp('XOR')">XOR</button>
+
+          <button class="cb num"   onclick="inputDigit('4')">4</button>
+          <button class="cb num"   onclick="inputDigit('5')">5</button>
+          <button class="cb num"   onclick="inputDigit('6')">6</button>
+          <button class="cb logic" onclick="applyLogicNot()">NOT</button>
+
+          <button class="cb num"   onclick="inputDigit('1')">1</button>
+          <button class="cb num"   onclick="inputDigit('2')">2</button>
+          <button class="cb num"   onclick="inputDigit('3')">3</button>
+          <button class="cb logic" onclick="inputOp('NAND')">NAND</button>
+
+          <button class="cb num span2 wide" onclick="inputDigit('0')" style="grid-column:span 2;border-radius:50px;aspect-ratio:unset;height:52px">0</button>
+          <button class="cb logic" onclick="inputOp('NOR')">NOR</button>
+          <button class="cb eq"    onclick="calculate()">=</button>
+        </div>
+      </div>
+
+      <!-- ═ HENKAN (Transformasi) PANE ═ -->
+      <div class="pane" id="pane-henkan">
+        <!-- BASIS -->
+        <div style="margin-bottom:16px">
+          <div class="sec-div"><div class="sec-div-line"></div><span class="sec-div-text">Konversi Basis</span><div class="sec-div-line"></div></div>
+          <div class="d-flex gap-2 mb-2">
+            <div style="flex:1"><input class="fi" id="bInput" placeholder="Angka..." oninput="doBase()"/></div>
+            <div style="width:140px"><select class="fs" id="bFrom" onchange="doBase()">
+              <option value="10">Desimal (10)</option>
+              <option value="2">Biner (2)</option>
+              <option value="8">Oktal (8)</option>
+              <option value="16">Heksadesimal</option>
+            </select></div>
+          </div>
+          <div class="conv-grid2">
+            <div><div class="conv-lbl">DESIMAL</div><div class="res-box" id="rDec">—</div></div>
+            <div><div class="conv-lbl">BINER</div><div class="res-box" id="rBin" style="font-size:.72rem">—</div></div>
+            <div><div class="conv-lbl">OKTAL</div><div class="res-box" id="rOct">—</div></div>
+            <div><div class="conv-lbl">HEKSADESIMAL</div><div class="res-box" id="rHex">—</div></div>
+          </div>
+          <div class="step-inline" id="baseStep"></div>
+        </div>
+        <!-- SUHU -->
+        <div style="margin-bottom:16px">
+          <div class="sec-div"><div class="sec-div-line"></div><span class="sec-div-text">Konversi Suhu</span><div class="sec-div-line"></div></div>
+          <div class="d-flex gap-2 mb-2">
+            <div style="flex:1"><input class="fi" id="tInput" type="number" placeholder="Nilai suhu..." oninput="doTemp()"/></div>
+            <div style="width:140px"><select class="fs" id="tFrom" onchange="doTemp()">
+              <option value="C">Celsius (°C)</option>
+              <option value="F">Fahrenheit (°F)</option>
+              <option value="K">Kelvin (K)</option>
+              <option value="R">Réaumur (°Ré)</option>
+            </select></div>
+          </div>
+          <div class="conv-grid2">
+            <div><div class="conv-lbl">CELSIUS</div><div class="res-box" id="rC">—</div></div>
+            <div><div class="conv-lbl">FAHRENHEIT</div><div class="res-box" id="rF">—</div></div>
+            <div><div class="conv-lbl">KELVIN</div><div class="res-box" id="rK">—</div></div>
+            <div><div class="conv-lbl">RÉAUMUR</div><div class="res-box" id="rR">—</div></div>
+          </div>
+          <div class="step-inline" id="tempStep"></div>
+        </div>
+        <!-- MATA UANG -->
+        <div>
+          <div class="sec-div"><div class="sec-div-line"></div><span class="sec-div-text">Konversi Mata Uang</span><div class="sec-div-line"></div></div>
+          <div class="d-flex gap-2 mb-2">
+            <div style="flex:1"><input class="fi" id="cInput" type="number" placeholder="Jumlah..." oninput="doCurr()"/></div>
+            <div style="width:110px"><select class="fs" id="cFrom" onchange="doCurr()">
+              <option value="IDR">IDR</option><option value="USD">USD</option>
+              <option value="EUR">EUR</option><option value="SGD">SGD</option>
+              <option value="JPY">JPY</option><option value="GBP">GBP</option>
+              <option value="MYR">MYR</option><option value="AUD">AUD</option>
+            </select></div>
+            <div style="width:110px"><select class="fs" id="cTo" onchange="doCurr()">
+              <option value="USD">USD</option><option value="IDR">IDR</option>
+              <option value="EUR">EUR</option><option value="SGD">SGD</option>
+              <option value="JPY">JPY</option><option value="GBP">GBP</option>
+              <option value="MYR">MYR</option><option value="AUD">AUD</option>
+            </select></div>
+          </div>
+          <div class="conv-arrow"><i class="bi bi-arrow-down-circle-fill"></i></div>
+          <div class="res-box" id="rCurr" style="justify-content:center;font-size:1.1rem">—</div>
+          <div id="currInfo" style="text-align:center;font-size:.62rem;color:var(--text-light);font-family:'Montserrat',sans-serif;margin-top:6px"></div>
+          <div class="step-inline" id="currStep"></div>
+        </div>
+      </div>
+
+      <!-- ═ BONUS PANE ═ -->
+      <div class="pane" id="pane-bonus">
+        <div style="margin-bottom:18px">
+          <div class="sec-div"><div class="sec-div-line"></div><span class="sec-div-text">Faktorial n!</span><div class="sec-div-line"></div></div>
+          <div class="bonus-row">
+            <input class="fi" id="factIn" type="number" placeholder="n = ? (0–170)" min="0" max="170"/>
+            <button class="bonus-btn" onclick="doFact()">Hitung 🌸</button>
+          </div>
+          <div class="bonus-res" id="factRes"><span style="color:var(--text-light)">Masukkan nilai n lalu tekan Hitung</span></div>
+        </div>
+        <div>
+          <div class="sec-div"><div class="sec-div-line"></div><span class="sec-div-text">Deret Fibonacci</span><div class="sec-div-line"></div></div>
+          <div class="bonus-row">
+            <input class="fi" id="fibIn" type="number" placeholder="Suku ke-? (1–78)" min="1" max="78"/>
+            <button class="bonus-btn" onclick="doFib()">Hitung 🌸</button>
+          </div>
+          <div class="bonus-res" id="fibRes"><span style="color:var(--text-light)">Masukkan jumlah suku lalu tekan Hitung</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP CARD -->
+    <div class="step-card" id="stepCard" style="margin-top:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div style="font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-light);font-family:'Noto Sans JP',sans-serif">こたえ · Langkah Penyelesaian</div>
+        <button onclick="closeStep()" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:.85rem"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="step-formula" id="stepFormula"></div>
+      <div id="stepBody"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+
+    <!-- INFO CARD -->
+    <div class="panel-card" id="infoCard">
+      <div class="panel-card-title">こたえ</div>
+      <div class="panel-card-sub">
+        <span id="infoTitle">Hasil & Penjelasan</span>
+      </div>
+      <div id="infoBody" style="font-size:.78rem;color:var(--text-sub);font-family:'Montserrat',sans-serif;line-height:1.7">
+        Pilih mode dan mulai menghitung. Setiap hasil akan ditampilkan bersama <span style="color:var(--pink-accent);font-weight:600">rumus</span> dan <span style="color:var(--op-btn);font-weight:600">langkah penyelesaian</span> lengkap.
+      </div>
+    </div>
+
+    <!-- HISTORY CARD -->
+    <div class="panel-card" id="histCard">
+      <div class="panel-card-title">りれき</div>
+      <div class="panel-card-sub">
+        <span>Riwayat Perhitungan</span>
+        <button class="hist-clear" onclick="clearHist()"><i class="bi bi-trash3 me-1"></i>Hapus</button>
+      </div>
+      <div id="histWrap">
+        <div class="hist-empty" id="noHist">Belum ada perhitungan 🌸</div>
+        <div class="hist-list" id="histList"></div>
+      </div>
+    </div>
+
+    <!-- RUMUS REFERENSI -->
+    <div class="panel-card">
+      <div class="panel-card-title">さんこう</div>
+      <div class="panel-card-sub">Rumus Referensi</div>
+      <div style="font-size:.72rem;font-family:'Montserrat',sans-serif;color:var(--text-sub);line-height:2">
+        <div style="background:rgba(255,255,255,.4);border-radius:8px;padding:6px 10px;margin-bottom:6px">
+          <span style="color:var(--pink-accent);font-weight:700">Suhu:</span> °F=(°C×9/5)+32 · K=°C+273.15 · °Ré=°C×4/5
+        </div>
+        <div style="background:rgba(255,255,255,.4);border-radius:8px;padding:6px 10px;margin-bottom:6px">
+          <span style="color:var(--op-btn);font-weight:700">Logika:</span> AND · OR · XOR · NOT · NAND · NOR
+        </div>
+        <div style="background:rgba(255,255,255,.4);border-radius:8px;padding:6px 10px">
+          <span style="color:var(--lavender);font-weight:700">Bonus:</span> n! = n×(n−1)×…×1 · F(n)=F(n−1)+F(n−2)
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end right panel -->
+
+</div><!-- end main-wrap -->
+
+<div class="toast-wrap" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ══════════════════════════════════
+//  STATE
+// ══════════════════════════════════
+let cur='0', prev=null, op=null, fresh=false;
+let mode='standar', histData=[];
+
+// ══════════════════════════════════
+//  THEME
+// ══════════════════════════════════
+function toggleTheme(){
+  const d=document.documentElement;
+  const dark=d.getAttribute('data-theme')==='dark';
+  d.setAttribute('data-theme',dark?'light':'dark');
+  document.getElementById('themeIco').className=dark?'bi bi-moon-stars-fill':'bi bi-sun-fill';
+}
+
+// ══════════════════════════════════
+//  MODE
+// ══════════════════════════════════
+const titleMap={
+  standar:['かんたんけいさんき','Kalkulator Standar'],
+  arith:  ['さんじゅつけいさんき','Kalkulator Aritmatika'],
+  logic:  ['ろんりえんざん','Operator Logika Bitwise'],
+  henkan: ['へんかん','Konversi & Transformasi'],
+  bonus:  ['とくべつきのう','Faktorial & Fibonacci']
+};
+function switchMode(m,el){
+  mode=m;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pane-'+m).classList.add('active');
+  const [jp,id]=titleMap[m]||['',''];
+  document.getElementById('cardJpTitle').textContent=jp;
+  document.getElementById('cardTitle').textContent=id;
+  if(['standar','arith','logic'].includes(m)) clearAll();
+  closeStep();
+}
+
+// ══════════════════════════════════
+//  DISPLAY
+// ══════════════════════════════════
+function setDisp(v,expr=''){
+  const el=document.getElementById('dMain');
+  const s=String(v);
+  el.textContent=s;
+  el.className='display-main'+(s.length>14?' xs':s.length>10?' sm':'');
+  document.getElementById('dExpr').textContent=expr;
+}
+function showOp(o){
+  const b=document.getElementById('opTag');
+  const m={'+':'+','-':'−','*':'×','/':'÷','**':'xʸ','%':'MOD','//':'⌊÷⌋','AND':'AND','OR':'OR','XOR':'XOR','NAND':'NAND','NOR':'NOR'};
+  if(o){b.textContent=m[o]||o;b.classList.add('show');}
+  else b.classList.remove('show');
+}
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+// ══════════════════════════════════
+//  INPUT
+// ══════════════════════════════════
+function inputDigit(v){
+  if(fresh){cur=v;fresh=false;}
+  else cur=(cur==='0'&&v!=='.')? v:cur+v;
+  setDisp(cur); showOp(op);
+}
+function inputDot(){ if(fresh){cur='0.';fresh=false;} else if(!cur.includes('.'))cur+='.'; setDisp(cur); }
+function inputOp(o){
+  fresh=false;
+  if(op&&prev!==null){const r=doMath(parseFloat(prev),parseFloat(cur),op);cur=String(r);setDisp(cur);}
+  prev=cur;op=o;cur='0';
+  const s={'+':'+','-':'−','*':'×','/':'÷','**':'ˣʸ','%':'mod','//':'⌊÷⌋','AND':'AND','OR':'OR','XOR':'XOR','NAND':'NAND','NOR':'NOR'};
+  document.getElementById('dExpr').textContent=`${prev} ${s[o]||o}`;
+  showOp(o);
+}
+function clearAll(){ cur='0';prev=null;op=null;fresh=false;setDisp('0','');showOp(null);closeStep(); }
+function backspace(){ if(fresh){clearAll();return;} cur=cur.length>1?cur.slice(0,-1):'0'; setDisp(cur); }
+
+// ══════════════════════════════════
+//  UNARY FUNCTIONS
+// ══════════════════════════════════
+function applyFn(fn){
+  const v=parseFloat(cur);
+  let res,formula,steps=[];
+  switch(fn){
+    case 'sqrt': if(v<0){setDisp('Error');return;} res=rd(Math.sqrt(v)); formula=`√${v} = ${res}`;
+      steps=[{t:`Input: <span class="step-val">${v}</span>`},{t:`Rumus: <span class="step-val">√n = n^½</span>`},{t:`Hasil: <span class="step-val">${res}</span>`}]; break;
+    case 'cbrt': res=rd(Math.cbrt(v)); formula=`∛${v} = ${res}`;
+      steps=[{t:`∛${v} = ${v}^(1/3) = <span class="step-val">${res}</span>`}]; break;
+    case 'sq':   res=rd(v*v); formula=`${v}² = ${res}`;
+      steps=[{t:`${v} × ${v} = <span class="step-val">${res}</span>`}]; break;
+    case 'inv':  if(v===0){setDisp('Error');return;} res=rd(1/v); formula=`1/${v} = ${res}`;
+      steps=[{t:`1 ÷ ${v} = <span class="step-val">${res}</span>`}]; break;
+    case 'abs':  res=Math.abs(v); formula=`|${v}| = ${res}`;
+      steps=[{t:`Nilai mutlak dari ${v} = <span class="step-val">${res}</span>`}]; break;
+    case 'sin':  res=rd(Math.sin(v*Math.PI/180)); formula=`sin(${v}°) = ${res}`;
+      steps=[{t:`${v}° → ${rd(v*Math.PI/180)} rad`},{t:`sin = <span class="step-val">${res}</span>`}]; break;
+    case 'cos':  res=rd(Math.cos(v*Math.PI/180)); formula=`cos(${v}°) = ${res}`;
+      steps=[{t:`${v}° → ${rd(v*Math.PI/180)} rad`},{t:`cos = <span class="step-val">${res}</span>`}]; break;
+    case 'tan':  res=rd(Math.tan(v*Math.PI/180)); formula=`tan(${v}°) = ${res}`;
+      steps=[{t:`${v}° → ${rd(v*Math.PI/180)} rad`},{t:`tan = <span class="step-val">${res}</span>`}]; break;
+    case 'log':  if(v<=0){setDisp('Error');return;} res=rd(Math.log10(v)); formula=`log(${v}) = ${res}`;
+      steps=[{t:`log₁₀(${v}) = <span class="step-val">${res}</span>`}]; break;
+    case 'ln':   if(v<=0){setDisp('Error');return;} res=rd(Math.log(v)); formula=`ln(${v}) = ${res}`;
+      steps=[{t:`ln(${v}) = <span class="step-val">${res}</span>`}]; break;
+    case 'negate': res=rd(v*-1); formula=`−(${v}) = ${res}`;
+      steps=[{t:`${v} × −1 = <span class="step-val">${res}</span>`}]; break;
+    case 'pct': res=rd(v/100); formula=`${v}% = ${res}`;
+      steps=[{t:`${v} ÷ 100 = <span class="step-val">${res}</span>`}]; break;
+    default: return;
+  }
+  cur=String(res); fresh=true;
+  setDisp(cur,formula);
+  showSteps(formula,steps);
+  addHist(formula,cur,'arith');
+  updateInfo(formula,`Fungsi ${fn} diterapkan pada ${v}`);
+  postFlask('/api/calculate',{fn,val:v});
+}
+function applyLogicNot(){
+  const v=parseInt(cur); if(isNaN(v)){setDisp('Error');return;}
+  const res=~v>>>0; const formula=`NOT ${v} = ${res}`;
+  const steps=[
+    {t:`Input: <span class="step-val">${v}</span> → Biner: <span class="step-val">${(v>>>0).toString(2).padStart(8,'0')}</span>`},
+    {t:`Operasi NOT: flip semua bit`},
+    {t:`Hasil: <span class="step-val">${res}</span> (Biner: ${res.toString(2)})`}
+  ];
+  cur=String(res); fresh=true;
+  setDisp(cur,formula);
+  showSteps(formula,steps);
+  addHist(formula,cur,'logic');
+}
+
+// ══════════════════════════════════
+//  CALCULATE
+// ══════════════════════════════════
+function calculate(){
+  if(op===null||prev===null)return;
+  const a=parseFloat(prev),b=parseFloat(cur);
+  const isLogic=['AND','OR','XOR','NAND','NOR'].includes(op);
+  let res,formula,steps;
+  if(isLogic){({res,formula,steps}=calcLogic(parseInt(a),parseInt(b),op));}
+  else{res=doMath(a,b,op);({formula,steps}=buildSteps(a,b,op,res));}
+  const expr=buildExpr(a,b,op)+' =';
+  setDisp(String(res),expr);
+  cur=String(res);prev=null;op=null;fresh=true;
+  showOp(null); showSteps(formula,steps);
+  addHist(formula,cur,isLogic?'logic':'arith');
+  updateInfo(formula,`${steps.length} langkah penyelesaian`);
+  postFlask('/api/calculate',{a,b,op});
+}
+function doMath(a,b,o){
+  switch(o){
+    case '+': return rd(a+b); case '-': return rd(a-b);
+    case '*': return rd(a*b); case '/': return b!==0?rd(a/b):'Error';
+    case '**':return rd(Math.pow(a,b));
+    case '%': return b!==0?rd(a%b):'Error';
+    case '//':return b!==0?Math.floor(a/b):'Error';
+    default: return b;
+  }
+}
+function buildExpr(a,b,o){const s={'+':'+','-':'−','*':'×','/':'÷','**':'^','%':'mod','//':'⌊÷⌋'};return`${a} ${s[o]||o} ${b}`;}
+function buildSteps(a,b,o,res){
+  const n={'+':'Penjumlahan','-':'Pengurangan','*':'Perkalian','/':'Pembagian','**':'Pemangkatan','%':'Modulus','//':'Floor Division'};
+  const s={'+':'+','-':'−','*':'×','/':'÷','**':'^','%':'mod','//':'⌊÷⌋'};
+  const formula=`${a} ${s[o]||o} ${b} = ${res}`;
+  let steps=[
+    {t:`Operasi: <span class="step-val">${n[o]||o}</span>`},
+    {t:`A = <span class="step-val">${a}</span>, B = <span class="step-val">${b}</span>`},
+  ];
+  if(o==='**') steps.push({t:`${a}^${b} = <span class="step-val">${res}</span>`});
+  else if(o==='%') steps.push({t:`Sisa bagi ${a} ÷ ${b}: quotient=${Math.floor(a/b)}, sisa=<span class="step-val">${res}</span>`});
+  else if(o==='//') steps.push({t:`⌊${a}÷${b}⌋ = ⌊${a/b}⌋ = <span class="step-val">${res}</span>`});
+  else steps.push({t:`${a} ${s[o]||o} ${b} = <span class="step-val">${res}</span>`});
+  steps.push({t:`Hasil akhir: <span class="step-val">${res}</span>`});
+  return{formula,steps};
+}
+function calcLogic(a,b,o){
+  let res;
+  switch(o){case 'AND':res=a&b;break;case 'OR':res=a|b;break;case 'XOR':res=a^b;break;case 'NAND':res=~(a&b)>>>0;break;case 'NOR':res=~(a|b)>>>0;break;}
+  const desc={AND:'1 jika KEDUANYA 1',OR:'1 jika salah satu 1',XOR:'1 jika bit BERBEDA',NAND:'NOT(A AND B)',NOR:'NOT(A OR B)'};
+  const formula=`${a} ${o} ${b} = ${res}`;
+  const steps=[
+    {t:`Operasi: <span class="step-val">${o}</span> — ${desc[o]}`},
+    {t:`A=${a} Biner: <span class="step-val">${(a>>>0).toString(2).padStart(8,'0')}</span>`},
+    {t:`B=${b} Biner: <span class="step-val">${(b>>>0).toString(2).padStart(8,'0')}</span>`},
+    {t:`Hasil: <span class="step-val">${res}</span> (Biner: ${(res>>>0).toString(2)})`}
+  ];
+  return{res,formula,steps};
+}
+
+// ══════════════════════════════════
+//  STEPS PANEL
+// ══════════════════════════════════
+function showSteps(formula,steps){
+  document.getElementById('stepFormula').textContent=formula;
+  document.getElementById('stepBody').innerHTML=steps.map((s,i)=>
+    `<div class="step-row" style="animation-delay:${i*.06}s">
+      <div class="step-num">${i+1}</div>
+      <div class="step-txt">${s.t}</div>
+    </div>`).join('');
+  document.getElementById('stepCard').classList.add('show');
+}
+function closeStep(){ document.getElementById('stepCard').classList.remove('show'); }
+function updateInfo(formula,desc){
+  document.getElementById('infoBody').innerHTML=
+    `<div style="background:rgba(232,97,157,.1);border-left:3px solid var(--pink-accent);border-radius:0 8px 8px 0;padding:8px 12px;margin-bottom:8px;font-weight:700;color:var(--pink-accent);font-family:'Playfair Display',serif;font-style:italic">${formula}</div>
+     <div>${desc}</div>`;
+}
+
+// ══════════════════════════════════
+//  HISTORY
+// ══════════════════════════════════
+function addHist(expr,res,type){
+  const t=new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  histData.unshift({expr,res,type,t});
+  if(histData.length>60)histData.pop();
+  renderHist();
+}
+function renderHist(){
+  document.getElementById('noHist').style.display=histData.length?'none':'block';
+  const list=document.getElementById('histList');
+  list.innerHTML='';
+  histData.forEach((h,i)=>{
+    const cls={arith:'ht-arith',logic:'ht-logic',conv:'ht-conv',bonus:'ht-bonus'}[h.type]||'ht-arith';
+    const lbl={arith:'ARITH',logic:'LOGIC',conv:'KONV',bonus:'BONUS'}[h.type]||'ARITH';
+    const el=document.createElement('div');
+    el.className='hist-item'; el.style.animationDelay=(i*.03)+'s';
+    el.innerHTML=`<span class="hist-type ${cls}">${lbl}</span>
+      <div class="hist-expr">${h.expr}</div>
+      <div class="hist-res">${h.res}</div>
+      <div class="hist-time">🕐 ${h.t}</div>`;
+    el.onclick=()=>{cur=String(h.res);fresh=true;setDisp(cur);toast('Hasil diambil dari riwayat 🌸');};
+    list.appendChild(el);
+  });
+}
+function clearHist(){ histData=[];renderHist();toast('Riwayat dihapus 🌸'); }
+function openHistTab(){ document.getElementById('histCard').scrollIntoView({behavior:'smooth'}); }
+
+// ══════════════════════════════════
+//  BASE CONVERSION
+// ══════════════════════════════════
+function doBase(){
+  const raw=document.getElementById('bInput').value.trim().toUpperCase();
+  const from=parseInt(document.getElementById('bFrom').value);
+  if(!raw){['rDec','rBin','rOct','rHex'].forEach(id=>document.getElementById(id).textContent='—');return;}
+  try{
+    const dec=parseInt(raw,from); if(isNaN(dec))throw new Error();
+    document.getElementById('rDec').textContent=dec;
+    document.getElementById('rBin').textContent=dec.toString(2);
+    document.getElementById('rOct').textContent=dec.toString(8);
+    document.getElementById('rHex').textContent=dec.toString(16).toUpperCase();
+    const fn={10:'Desimal',2:'Biner',8:'Oktal',16:'Heksadesimal'};
+    let h=`<b>Konversi ${fn[from]}→Semua Basis:</b><br>`;
+    if(from!==2) h+=`→ Biner: <b>${dec.toString(2)}</b><br>`;
+    if(from!==10) h+=`→ Desimal: <b>${dec}</b><br>`;
+    if(from!==8) h+=`→ Oktal: <b>${dec.toString(8)}</b><br>`;
+    if(from!==16) h+=`→ Hex: <b>${dec.toString(16).toUpperCase()}</b>`;
+    const sd=document.getElementById('baseStep'); sd.innerHTML=h; sd.classList.add('show');
+    addHist(`${raw}(${from})→DEC:${dec}`,dec,'conv');
+  }catch(e){['rDec','rBin','rOct','rHex'].forEach(id=>document.getElementById(id).textContent='—');}
+}
+
+// ══════════════════════════════════
+//  TEMPERATURE
+// ══════════════════════════════════
+function doTemp(){
+  const v=parseFloat(document.getElementById('tInput').value);
+  const f=document.getElementById('tFrom').value;
+  if(isNaN(v)){['rC','rF','rK','rR'].forEach(id=>document.getElementById(id).textContent='—');return;}
+  let c;
+  if(f==='C')c=v; else if(f==='F')c=(v-32)*5/9; else if(f==='K')c=v-273.15; else c=v*5/4;
+  const F=c*9/5+32, K=c+273.15, R=c*4/5;
+  document.getElementById('rC').textContent=`${rd(c,4)} °C`;
+  document.getElementById('rF').textContent=`${rd(F,4)} °F`;
+  document.getElementById('rK').textContent=`${rd(K,4)} K`;
+  document.getElementById('rR').textContent=`${rd(R,4)} °Ré`;
+  const ts=document.getElementById('tempStep');
+  ts.innerHTML=`<b>Langkah (via Celsius):</b><br>→ °F = (${rd(c,2)}×9/5)+32 = <b>${rd(F,4)}</b><br>→ K = ${rd(c,2)}+273.15 = <b>${rd(K,4)}</b><br>→ °Ré = ${rd(c,2)}×4/5 = <b>${rd(R,4)}</b>`;
+  ts.classList.add('show');
+  addHist(`${v}°${f}→C:${rd(c,2)} F:${rd(F,2)}`,rd(c,4),'conv');
+}
+
+// ══════════════════════════════════
+//  CURRENCY
+// ══════════════════════════════════
+const RATES={IDR:1,USD:16200,EUR:17500,SGD:12000,JPY:108,GBP:20400,MYR:3500,AUD:10500};
+const SYMS={IDR:'Rp',USD:'$',EUR:'€',SGD:'S$',JPY:'¥',GBP:'£',MYR:'RM',AUD:'A$'};
+function doCurr(){
+  const amt=parseFloat(document.getElementById('cInput').value);
+  const fr=document.getElementById('cFrom').value, to=document.getElementById('cTo').value;
+  if(isNaN(amt)){document.getElementById('rCurr').textContent='—';return;}
+  const inIDR=amt*RATES[fr], result=rd(inIDR/RATES[to],4);
+  document.getElementById('rCurr').textContent=`${SYMS[to]||''} ${result.toLocaleString('id-ID')}`;
+  document.getElementById('currInfo').textContent=`1 ${fr} = ${rd(RATES[fr]/RATES[to],6)} ${to}  (rate statis 2025)`;
+  const cs=document.getElementById('currStep');
+  cs.innerHTML=`<b>Langkah:</b><br>1. ${amt} ${fr} × ${RATES[fr]} = Rp ${inIDR.toLocaleString('id-ID')}<br>2. Rp ${inIDR.toLocaleString('id-ID')} ÷ ${RATES[to]} = <b>${result} ${to}</b>`;
+  cs.classList.add('show');
+  addHist(`${amt} ${fr} → ${result} ${to}`,result,'conv');
+}
+
+// ══════════════════════════════════
+//  BONUS
+// ══════════════════════════════════
+function doFact(){
+  const n=parseInt(document.getElementById('factIn').value);
+  const el=document.getElementById('factRes');
+  if(isNaN(n)||n<0||n>170){el.innerHTML='<span style="color:#E85878">Input tidak valid (0–170)</span>';return;}
+  let res=1n; const steps=[];
+  for(let i=2;i<=n;i++){res*=BigInt(i); if(i<=8||i===n)steps.push(`${i}!=${res}`);}
+  el.innerHTML=`<b>Rumus:</b> n! = n×(n−1)×…×1<br><b>Langkah:</b> ${steps.slice(0,5).map(s=>`<span class="v">${s}</span>`).join(' → ')}<br>${n>8?'…<br>':''}<b>Hasil <span class="vp">${n}!</span> = </b><span class="vp">${res.toString()}</span>`;
+  addHist(`${n}!`,res.toString(),'bonus'); toast(`${n}! dihitung 🌸`);
+}
+function doFib(){
+  const n=parseInt(document.getElementById('fibIn').value);
+  const el=document.getElementById('fibRes');
+  if(isNaN(n)||n<1||n>78){el.innerHTML='<span style="color:#E85878">Input tidak valid (1–78)</span>';return;}
+  const f=[0n,1n];
+  for(let i=2;i<n;i++)f.push(f[i-1]+f[i-2]);
+  const seq=f.slice(0,n).map(String);
+  el.innerHTML=`<b>Rumus:</b> F(n)=F(n−1)+F(n−2), F(0)=0, F(1)=1<br><b>Deret ${n} suku:</b><br>${seq.slice(0,10).map(v=>`<span class="v">${v}</span>`).join(', ')}${n>10?', …':''}${n>10?`, <span class="vp">${seq[n-1]}</span>`:''}<br><b>Suku ke-${n}: </b><span class="vp">${seq[n-1]}</span>`;
+  addHist(`Fibonacci(${n})`,seq[n-1],'bonus'); toast(`Fibonacci(${n}) selesai 🌸`);
+}
+
+// ══════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════
+function rd(v,d=10){return Math.round(v*Math.pow(10,d))/Math.pow(10,d);}
+async function postFlask(url,data){
+  try{
+    const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    if(r.ok){const j=await r.json();if(j.result!==undefined){cur=String(j.result);fresh=true;setDisp(cur);}}
+  }catch(e){}
+}
+
+// ══════════════════════════════════
+//  KEYBOARD
+// ══════════════════════════════════
+document.addEventListener('keydown',e=>{
+  if(!['standar','arith','logic'].includes(mode))return;
+  if(e.target.tagName==='INPUT')return;
+  if('0123456789'.includes(e.key)) inputDigit(e.key);
+  else if(e.key==='.')inputDot();
+  else if(e.key==='+')inputOp('+');
+  else if(e.key==='-')inputOp('-');
+  else if(e.key==='*')inputOp('*');
+  else if(e.key==='/'){ e.preventDefault();inputOp('/'); }
+  else if(e.key==='Enter'||e.key==='=')calculate();
+  else if(e.key==='Backspace')backspace();
+  else if(e.key==='Escape')clearAll();
+});
+</script>
+</body>
+</html>
