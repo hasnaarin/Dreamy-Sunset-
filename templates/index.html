@@ -1,582 +1,1218 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sun - Kalkulator Canggih</title>
   <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --ds:#0d0618;--dv:#1a0a2e;--dp:#2d1b4e;--pu:#6b3fa0;
-  --ro:#c2185b;--co:#ff6b6b;--am:#ffb347;--go:#ffd700;--pe:#ffcba4;
-  --bg:linear-gradient(160deg,#0d0618 0%,#1a0a2e 35%,#2d1040 60%,#1a0a2e 100%);
-  --card:rgba(45,27,78,0.6);--cardhov:rgba(60,35,95,0.8);
-  --inp:rgba(20,10,40,0.75);--bdr:rgba(255,179,71,0.22);
-  --bdrfoc:rgba(255,179,71,0.7);--txt:#fde8d8;--txts:#c9a8d8;--txtm:#8a6fa0;
-  --grad:linear-gradient(135deg,#c2185b,#ff6b6b,#ffb347);
-}
-.wrap{background:var(--bg);min-height:700px;border-radius:16px;overflow:hidden;font-family:'DM Sans',sans-serif;color:var(--txt);position:relative}
-.sun-bg{position:absolute;bottom:-60px;left:50%;transform:translateX(-50%);width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(255,190,50,.55) 0%,rgba(255,90,40,.3) 45%,transparent 70%);filter:blur(38px);pointer-events:none;z-index:0;animation:pulse 7s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:.8;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.1)}}
-.horizon{position:absolute;bottom:0;left:0;right:0;height:38%;background:linear-gradient(to top,rgba(255,80,20,.22) 0%,rgba(194,24,91,.12) 50%,transparent 100%);pointer-events:none;z-index:0}
-.stars{position:absolute;top:0;left:0;right:0;height:50%;pointer-events:none;z-index:0}
-.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle 3s ease-in-out infinite}
-@keyframes twinkle{0%,100%{opacity:.9}50%{opacity:.2}}
-.inner{position:relative;z-index:1;display:flex;flex-direction:column;height:100%}
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
 
-.header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px 14px;border-bottom:1px solid var(--bdr);background:rgba(13,6,24,.7);backdrop-filter:blur(12px)}
-.logo{display:flex;align-items:center;gap:12px}
-.sun-ico{font-size:26px;animation:glow 4s ease-in-out infinite}
-@keyframes glow{0%,100%{filter:drop-shadow(0 0 8px rgba(255,200,50,.9))}50%{filter:drop-shadow(0 0 20px rgba(255,120,50,1))}}
-.logo-t{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
-.logo-s{font-size:10px;color:var(--txtm);letter-spacing:.1em;text-transform:uppercase}
-.theme-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--bdr);background:var(--card);cursor:pointer;font-size:16px;display:grid;place-items:center;transition:.2s;color:var(--txt)}
-.theme-btn:hover{border-color:var(--bdrfoc);transform:rotate(20deg)}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
 
-.tabs{display:flex;gap:4px;padding:14px 20px 0;background:rgba(13,6,24,.5)}
-.tab{padding:9px 18px;border-radius:10px 10px 0 0;border:1px solid transparent;border-bottom:none;background:transparent;color:var(--txtm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:.2s}
-.tab:hover{color:var(--txts)}
-.tab.active{background:rgba(45,27,78,.7);border-color:var(--bdr);color:var(--am)}
+    :root {
+      --ds: #0d0618;
+      --dv: #1a0a2e;
+      --dp: #2d1b4e;
+      --pu: #6b3fa0;
+      --ro: #c2185b;
+      --co: #ff6b6b;
+      --am: #ffb347;
+      --go: #ffd700;
+      --pe: #ffcba4;
+      --bg: linear-gradient(160deg, #0d0618 0%, #1a0a2e 35%, #2d1040 60%, #1a0a2e 100%);
+      --card: rgba(45, 27, 78, 0.6);
+      --cardhov: rgba(60, 35, 95, 0.8);
+      --inp: rgba(20, 10, 40, 0.75);
+      --bdr: rgba(255, 179, 71, 0.22);
+      --bdrfoc: rgba(255, 179, 71, 0.7);
+      --txt: #fde8d8;
+      --txts: #c9a8d8;
+      --txtm: #8a6fa0;
+      --grad: linear-gradient(135deg, #c2185b, #ff6b6b, #ffb347);
+    }
 
-.panel{display:none;padding:24px;flex:1}
-.panel.active{display:block;animation:fadein .25s ease}
-@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .wrap {
+      background: var(--bg);
+      min-height: 100vh;
+      border-radius: 16px;
+      overflow: hidden;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--txt);
+      position: relative
+    }
 
-.ptitle{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
-.pdesc{font-size:12px;color:var(--txtm);margin-bottom:20px}
+    .sun-bg {
+      position: absolute;
+      bottom: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 190, 50, .55) 0%, rgba(255, 90, 40, .3) 45%, transparent 70%);
+      filter: blur(38px);
+      pointer-events: none;
+      z-index: 0;
+      animation: pulse 7s ease-in-out infinite
+    }
 
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
-.igroup label{display:block;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--txtm);margin-bottom:6px}
-.igroup input,.igroup select{width:100%;background:var(--inp);border:1px solid var(--bdr);border-radius:10px;padding:11px 14px;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--txt);outline:none;transition:.2s}
-.igroup input:focus,.igroup select:focus{border-color:var(--bdrfoc);box-shadow:0 0 0 2px rgba(255,179,71,.1)}
-.igroup select option{background:#1a0a2e}
+    @keyframes pulse {
 
-.opgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px}
-.opb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:14px 8px;border-radius:10px;border:1px solid var(--bdr);background:rgba(107,63,160,.28);backdrop-filter:blur(6px);color:var(--txt);cursor:pointer;transition:.2s;font-family:'DM Sans',sans-serif;min-height:68px}
-.opb:hover{border-color:var(--co);background:rgba(194,24,91,.32);transform:translateY(-2px);box-shadow:0 6px 20px rgba(194,24,91,.28)}
-.opb:active{transform:translateY(0)}
-.opb.sel{border-color:var(--am);background:rgba(255,179,71,.18);box-shadow:0 0 16px rgba(255,179,71,.2)}
-.opsym{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:var(--am)}
-.opnm{font-size:10px;color:var(--txts);text-align:center}
+      0%,
+      100% {
+        opacity: .8;
+        transform: translateX(-50%) scale(1)
+      }
 
-.calcbtn{display:inline-block;padding:12px 32px;border-radius:100px;border:none;background:var(--grad);color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:.2s;box-shadow:0 4px 18px rgba(194,24,91,.45);margin-bottom:20px}
-.calcbtn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(194,24,91,.6)}
-.calcbtn:active{transform:translateY(0)}
+      50% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1.1)
+      }
+    }
 
-.rescard{background:rgba(45,27,78,.55);backdrop-filter:blur(14px);border:1px solid rgba(255,179,71,.3);border-radius:18px;padding:22px;display:none;animation:fadein .35s ease}
-.rescard.show{display:block}
-.rexpr{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txtm);margin-bottom:6px}
-.rmain{font-family:'Playfair Display',serif;font-size:40px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:14px;word-break:break-all}
-.rform{display:inline-flex;align-items:center;gap:6px;background:rgba(255,179,71,.1);border:1px solid rgba(255,179,71,.22);border-radius:100px;padding:4px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--am);margin-bottom:18px}
-.stitle{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txtm);margin-bottom:10px}
-.slist{display:flex;flex-direction:column;gap:6px}
-.sitem{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:rgba(255,255,255,.035);border-radius:6px;border-left:2px solid var(--co)}
-.snum{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--co);font-weight:700;min-width:16px;padding-top:1px}
-.stxt{font-size:12px;color:var(--txts);font-family:'JetBrains Mono',monospace;line-height:1.5}
+    .horizon {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 38%;
+      background: linear-gradient(to top, rgba(255, 80, 20, .22) 0%, rgba(194, 24, 91, .12) 50%, transparent 100%);
+      pointer-events: none;
+      z-index: 0
+    }
 
-.subtabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--bdr)}
-.stab{padding:7px 14px;border-radius:100px;border:1px solid var(--bdr);background:transparent;color:var(--txts);font-size:12px;font-weight:500;cursor:pointer;transition:.2s;font-family:'DM Sans',sans-serif}
-.stab:hover{border-color:var(--am);color:var(--am)}
-.stab.active{background:rgba(255,179,71,.14);border-color:rgba(255,179,71,.5);color:var(--am)}
-.subp{display:none}.subp.active{display:block;animation:fadein .2s ease}
+    .stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      pointer-events: none;
+      z-index: 0
+    }
 
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.bitem{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:10px;padding:12px}
-.bilab{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--txtm);margin-bottom:5px}
-.bival{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;color:var(--am);word-break:break-all}
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: #fff;
+      animation: twinkle 3s ease-in-out infinite
+    }
 
-.citem{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
-.ccod{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--co)}
-.cval{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txt)}
+    @keyframes twinkle {
 
-.fibseq{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
-.fibchip{background:rgba(255,179,71,.11);border:1px solid rgba(255,179,71,.24);border-radius:6px;padding:4px 10px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--am)}
+      0%,
+      100% {
+        opacity: .9
+      }
 
-.histlist{display:flex;flex-direction:column;gap:10px}
-.histitem{background:rgba(45,27,78,.5);border:1px solid var(--bdr);border-radius:14px;padding:16px 18px;cursor:pointer;transition:.2s}
-.histitem:hover{border-color:rgba(255,179,71,.4);transform:translateX(3px)}
-.hmeta{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.hcat{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:100px;background:rgba(194,24,91,.2);border:1px solid rgba(194,24,91,.3);color:var(--co)}
-.hexpr{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txts);flex:1}
-.hres{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hsteps{margin-top:10px;padding-top:10px;border-top:1px solid var(--bdr);display:none}
-.histitem.exp .hsteps{display:block}
-.empty{text-align:center;color:var(--txtm);padding:40px 20px;font-size:14px}
+      50% {
+        opacity: .2
+      }
+    }
 
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:rgba(45,27,78,.95);backdrop-filter:blur(14px);border:1px solid var(--bdr);border-radius:100px;padding:10px 24px;font-size:13px;color:var(--txt);z-index:99;transition:transform .35s cubic-bezier(.2,.9,.4,1);pointer-events:none}
-.toast.up{transform:translateX(-50%) translateY(0)}
-.toast.ok{border-color:rgba(255,179,71,.5);color:var(--am)}
-.toast.err{border-color:rgba(255,107,107,.5);color:var(--co)}
-.infobadge{display:inline-flex;align-items:center;gap:6px;background:rgba(135,206,235,.09);border:1px solid rgba(135,206,235,.22);border-radius:100px;padding:5px 12px;font-size:11px;color:#87ceeb;margin-bottom:14px}
-.sp{height:4px}
+    .inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px 14px;
+      border-bottom: 1px solid var(--bdr);
+      background: rgba(13, 6, 24, .7);
+      backdrop-filter: blur(12px)
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .sun-ico {
+      font-size: 26px;
+      animation: glow 4s ease-in-out infinite
+    }
+
+    @keyframes glow {
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 8px rgba(255, 200, 50, .9))
+      }
+
+      50% {
+        filter: drop-shadow(0 0 20px rgba(255, 120, 50, 1))
+      }
+    }
+
+    .logo-t {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 900;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1
+    }
+
+    .logo-s {
+      font-size: 10px;
+      color: var(--txtm);
+      letter-spacing: .1em;
+      text-transform: uppercase
+    }
+
+    .theme-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--bdr);
+      background: var(--card);
+      cursor: pointer;
+      font-size: 16px;
+      display: grid;
+      place-items: center;
+      transition: .2s;
+      color: var(--txt)
+    }
+
+    .theme-btn:hover {
+      border-color: var(--bdrfoc);
+      transform: rotate(20deg)
+    }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      padding: 14px 20px 0;
+      background: rgba(13, 6, 24, .5)
+    }
+
+    .tab {
+      padding: 9px 18px;
+      border-radius: 10px 10px 0 0;
+      border: 1px solid transparent;
+      border-bottom: none;
+      background: transparent;
+      color: var(--txtm);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: .2s
+    }
+
+    .tab:hover {
+      color: var(--txts)
+    }
+
+    .tab.active {
+      background: rgba(45, 27, 78, .7);
+      border-color: var(--bdr);
+      color: var(--am)
+    }
+
+    .panel {
+      display: none;
+      padding: 24px;
+      flex: 1
+    }
+
+    .panel.active {
+      display: block;
+      animation: fadein .25s ease
+    }
+
+    @keyframes fadein {
+      from {
+        opacity: 0;
+        transform: translateY(6px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .ptitle {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 900;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 4px
+    }
+
+    .pdesc {
+      font-size: 12px;
+      color: var(--txtm);
+      margin-bottom: 20px
+    }
+
+    .row2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 18px
+    }
+
+    .igroup label {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--txtm);
+      margin-bottom: 6px
+    }
+
+    .igroup input,
+    .igroup select {
+      width: 100%;
+      background: var(--inp);
+      border: 1px solid var(--bdr);
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: var(--txt);
+      outline: none;
+      transition: .2s
+    }
+
+    .igroup input:focus,
+    .igroup select:focus {
+      border-color: var(--bdrfoc);
+      box-shadow: 0 0 0 2px rgba(255, 179, 71, .1)
+    }
+
+    .igroup select option {
+      background: #1a0a2e
+    }
+
+    .opgrid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 22px
+    }
+
+    .opb {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 14px 8px;
+      border-radius: 10px;
+      border: 1px solid var(--bdr);
+      background: rgba(107, 63, 160, .28);
+      backdrop-filter: blur(6px);
+      color: var(--txt);
+      cursor: pointer;
+      transition: .2s;
+      font-family: 'DM Sans', sans-serif;
+      min-height: 68px
+    }
+
+    .opb:hover {
+      border-color: var(--co);
+      background: rgba(194, 24, 91, .32);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(194, 24, 91, .28)
+    }
+
+    .opb:active {
+      transform: translateY(0)
+    }
+
+    .opb.sel {
+      border-color: var(--am);
+      background: rgba(255, 179, 71, .18);
+      box-shadow: 0 0 16px rgba(255, 179, 71, .2)
+    }
+
+    .opsym {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--am)
+    }
+
+    .opnm {
+      font-size: 10px;
+      color: var(--txts);
+      text-align: center
+    }
+
+    .calcbtn {
+      display: inline-block;
+      padding: 12px 32px;
+      border-radius: 100px;
+      border: none;
+      background: var(--grad);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: .2s;
+      box-shadow: 0 4px 18px rgba(194, 24, 91, .45);
+      margin-bottom: 20px
+    }
+
+    .calcbtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(194, 24, 91, .6)
+    }
+
+    .calcbtn:active {
+      transform: translateY(0)
+    }
+
+    .rescard {
+      background: rgba(45, 27, 78, .55);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 179, 71, .3);
+      border-radius: 18px;
+      padding: 22px;
+      display: none;
+      animation: fadein .35s ease
+    }
+
+    .rescard.show {
+      display: block
+    }
+
+    .rexpr {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--txtm);
+      margin-bottom: 6px
+    }
+
+    .rmain {
+      font-family: 'Playfair Display', serif;
+      font-size: 40px;
+      font-weight: 900;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 14px;
+      word-break: break-all
+    }
+
+    .rform {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 179, 71, .1);
+      border: 1px solid rgba(255, 179, 71, .22);
+      border-radius: 100px;
+      padding: 4px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--am);
+      margin-bottom: 18px
+    }
+
+    .stitle {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--txtm);
+      margin-bottom: 10px
+    }
+
+    .slist {
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .sitem {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, .035);
+      border-radius: 6px;
+      border-left: 2px solid var(--co)
+    }
+
+    .snum {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--co);
+      font-weight: 700;
+      min-width: 16px;
+      padding-top: 1px
+    }
+
+    .stxt {
+      font-size: 12px;
+      color: var(--txts);
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.5
+    }
+
+    .subtabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--bdr)
+    }
+
+    .stab {
+      padding: 7px 14px;
+      border-radius: 100px;
+      border: 1px solid var(--bdr);
+      background: transparent;
+      color: var(--txts);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: .2s;
+      font-family: 'DM Sans', sans-serif
+    }
+
+    .stab:hover {
+      border-color: var(--am);
+      color: var(--am)
+    }
+
+    .stab.active {
+      background: rgba(255, 179, 71, .14);
+      border-color: rgba(255, 179, 71, .5);
+      color: var(--am)
+    }
+
+    .subp {
+      display: none
+    }
+
+    .subp.active {
+      display: block;
+      animation: fadein .2s ease
+    }
+
+    .g2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px
+    }
+
+    .bitem {
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid var(--bdr);
+      border-radius: 10px;
+      padding: 12px
+    }
+
+    .bilab {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--txtm);
+      margin-bottom: 5px
+    }
+
+    .bival {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--am);
+      word-break: break-all
+    }
+
+    .citem {
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid var(--bdr);
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center
+    }
+
+    .ccod {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--co)
+    }
+
+    .cval {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--txt)
+    }
+
+    .fibseq {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px
+    }
+
+    .fibchip {
+      background: rgba(255, 179, 71, .11);
+      border: 1px solid rgba(255, 179, 71, .24);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--am)
+    }
+
+    .histlist {
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    .histitem {
+      background: rgba(45, 27, 78, .5);
+      border: 1px solid var(--bdr);
+      border-radius: 14px;
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: .2s
+    }
+
+    .histitem:hover {
+      border-color: rgba(255, 179, 71, .4);
+      transform: translateX(3px)
+    }
+
+    .hmeta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px
+    }
+
+    .hcat {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 100px;
+      background: rgba(194, 24, 91, .2);
+      border: 1px solid rgba(194, 24, 91, .3);
+      color: var(--co)
+    }
+
+    .hexpr {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--txts);
+      flex: 1
+    }
+
+    .hres {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text
+    }
+
+    .hsteps {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--bdr);
+      display: none
+    }
+
+    .histitem.exp .hsteps {
+      display: block
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--txtm);
+      padding: 40px 20px;
+      font-size: 14px
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(60px);
+      background: rgba(45, 27, 78, .95);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--bdr);
+      border-radius: 100px;
+      padding: 10px 24px;
+      font-size: 13px;
+      color: var(--txt);
+      z-index: 99;
+      transition: transform .35s cubic-bezier(.2, .9, .4, 1);
+      pointer-events: none
+    }
+
+    .toast.up {
+      transform: translateX(-50%) translateY(0)
+    }
+
+    .toast.ok {
+      border-color: rgba(255, 179, 71, .5);
+      color: var(--am)
+    }
+
+    .toast.err {
+      border-color: rgba(255, 107, 107, .5);
+      color: var(--co)
+    }
+
+    .infobadge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(135, 206, 235, .09);
+      border: 1px solid rgba(135, 206, 235, .22);
+      border-radius: 100px;
+      padding: 5px 12px;
+      font-size: 11px;
+      color: #87ceeb;
+      margin-bottom: 14px
+    }
+
+    .sp {
+      height: 4px
+    }
   </style>
 </head>
+
 <body>
   <div class="wrap" id="app">
-  <div class="sun-bg"></div>
-  <div class="horizon"></div>
-  <div class="stars" id="stars"></div>
-  <div class="inner">
-    <div class="header">
-      <div class="logo">
-        <span class="sun-ico">☀</span>
-        <div>
-          <div class="logo-t">SunCalc</div>
-          <div class="logo-s">Kalkulator Canggih</div>
+    <div class="sun-bg"></div>
+    <div class="horizon"></div>
+    <div class="stars" id="stars"></div>
+    <div class="inner">
+      <div class="header">
+        <div class="logo">
+          <span class="sun-ico">☀</span>
+          <div>
+            <div class="logo-t">SunCalc</div>
+            <div class="logo-s">Kalkulator Canggih</div>
+          </div>
         </div>
+        <button class="theme-btn" id="themeBtn" title="Ganti tema">🌙</button>
       </div>
-      <button class="theme-btn" id="themeBtn" title="Ganti tema">🌙</button>
-    </div>
 
-    <div class="tabs">
-      <button class="tab active" data-t="arith">± Aritmatika</button>
-      <button class="tab" data-t="logic">⊕ Logika</button>
-      <button class="tab" data-t="trans">⇌ Transformasi</button>
-      <button class="tab" data-t="hist">🕐 Riwayat</button>
-    </div>
+      <div class="tabs">
+        <button class="tab active" data-t="arith">± Aritmatika</button>
+        <button class="tab" data-t="logic">⊕ Logika</button>
+        <button class="tab" data-t="trans">⇌ Transformasi</button>
+        <button class="tab" data-t="hist">🕐 Riwayat</button>
+      </div>
 
-    <!-- ARITMATIKA -->
-    <div class="panel active" id="p-arith">
-      <div class="ptitle">Operasi Aritmatika</div>
-      <div class="pdesc">Delapan operasi matematika dengan penjelasan langkah demi langkah</div>
-      <div class="row2">
-        <div class="igroup"><label>Nilai A</label><input type="number" id="aa" placeholder="Masukkan angka..."/></div>
-        <div class="igroup" id="abw"><label>Nilai B</label><input type="number" id="ab" placeholder="Masukkan angka..."/></div>
-      </div>
-      <div class="opgrid">
-        <button class="opb" data-op="add"><span class="opsym">+</span><span class="opnm">Tambah</span></button>
-        <button class="opb" data-op="sub"><span class="opsym">−</span><span class="opnm">Kurang</span></button>
-        <button class="opb" data-op="mul"><span class="opsym">×</span><span class="opnm">Kali</span></button>
-        <button class="opb" data-op="div"><span class="opsym">÷</span><span class="opnm">Bagi</span></button>
-        <button class="opb" data-op="pow"><span class="opsym">xʸ</span><span class="opnm">Pangkat</span></button>
-        <button class="opb" data-op="sqrt" data-single="1"><span class="opsym">√</span><span class="opnm">Akar</span></button>
-        <button class="opb" data-op="mod"><span class="opsym">%</span><span class="opnm">Modulus</span></button>
-        <button class="opb" data-op="fdiv"><span class="opsym">⌊÷⌋</span><span class="opnm">Floor Div</span></button>
-      </div>
-      <button class="calcbtn" id="arithcalc" style="width: 100%; margin-top: 10px; margin-bottom: 22px; font-size: 22px; font-weight: 900;">=</button>
-      <div class="rescard" id="ar"></div>
-    </div>
-
-    <!-- LOGIKA -->
-    <div class="panel" id="p-logic">
-      <div class="ptitle">Operator Logika</div>
-      <div class="pdesc">Operasi bitwise pada bilangan bulat</div>
-      <div class="row2">
-        <div class="igroup"><label>Nilai A (Integer)</label><input type="number" id="la" placeholder="Contoh: 12" step="1"/></div>
-        <div class="igroup" id="lbw"><label>Nilai B (Integer)</label><input type="number" id="lb" placeholder="Contoh: 10" step="1"/></div>
-      </div>
-      <div class="opgrid" style="grid-template-columns:repeat(3,1fr)">
-        <button class="opb" data-lop="and"><span class="opsym" style="font-size:13px">AND</span><span class="opnm">A & B</span></button>
-        <button class="opb" data-lop="or"><span class="opsym" style="font-size:13px">OR</span><span class="opnm">A | B</span></button>
-        <button class="opb" data-lop="not" data-single="1"><span class="opsym" style="font-size:13px">NOT</span><span class="opnm">~A</span></button>
-        <button class="opb" data-lop="xor"><span class="opsym" style="font-size:13px">XOR</span><span class="opnm">A ^ B</span></button>
-        <button class="opb" data-lop="nand"><span class="opsym" style="font-size:13px">NAND</span><span class="opnm">~(A&B)</span></button>
-        <button class="opb" data-lop="nor"><span class="opsym" style="font-size:13px">NOR</span><span class="opnm">~(A|B)</span></button>
-      </div>
-      <button class="calcbtn" id="logiccalc" style="width: 100%; margin-top: 10px; margin-bottom: 22px; font-size: 22px; font-weight: 900;">=</button>
-      <div class="rescard" id="lr"></div>
-    </div>
-
-    <!-- TRANSFORMASI -->
-    <div class="panel" id="p-trans">
-      <div class="ptitle">Transformasi Bilangan</div>
-      <div class="pdesc">Konversi basis, suhu, mata uang, faktorial & fibonacci</div>
-      <div class="subtabs">
-        <button class="stab active" data-s="base">⟨⟩ Basis</button>
-        <button class="stab" data-s="temp">🌡 Suhu</button>
-        <button class="stab" data-s="curr">💱 Mata Uang</button>
-        <button class="stab" data-s="fact">! Faktorial</button>
-        <button class="stab" data-s="fib">∿ Fibonacci</button>
-      </div>
-      <!-- Base -->
-      <div class="subp active" id="s-base">
+      <!-- ARITMATIKA -->
+      <div class="panel active" id="p-arith">
+        <div class="ptitle">Operasi Aritmatika</div>
+        <div class="pdesc">Delapan operasi matematika dengan penjelasan langkah demi langkah</div>
         <div class="row2">
-          <div class="igroup"><label>Nilai</label><input type="text" id="bv" placeholder="Contoh: 255"/></div>
-          <div class="igroup"><label>Dari Basis</label><select id="bf"><option value="10">Desimal (10)</option><option value="2">Biner (2)</option><option value="8">Oktal (8)</option><option value="16">Heksadesimal (16)</option></select></div>
+          <div class="igroup"><label>Nilai A</label><input type="number" id="aa" placeholder="Masukkan angka..." />
+          </div>
+          <div class="igroup" id="abw"><label>Nilai B</label><input type="number" id="ab"
+              placeholder="Masukkan angka..." /></div>
         </div>
-        <button class="calcbtn" id="bcalc">Konversi Semua Basis</button>
-        <div class="rescard" id="br"></div>
-      </div>
-      <!-- Temp -->
-      <div class="subp" id="s-temp">
-        <div class="row2">
-          <div class="igroup"><label>Nilai Suhu</label><input type="number" id="tv" placeholder="Contoh: 100"/></div>
-          <div class="igroup"><label>Dari Satuan</label><select id="tf"><option value="celsius">Celsius (°C)</option><option value="fahrenheit">Fahrenheit (°F)</option><option value="kelvin">Kelvin (K)</option><option value="reamur">Réamur (°Ré)</option></select></div>
+        <div class="opgrid">
+          <button class="opb" data-op="add"><span class="opsym">+</span><span class="opnm">Tambah</span></button>
+          <button class="opb" data-op="sub"><span class="opsym">−</span><span class="opnm">Kurang</span></button>
+          <button class="opb" data-op="mul"><span class="opsym">×</span><span class="opnm">Kali</span></button>
+          <button class="opb" data-op="div"><span class="opsym">÷</span><span class="opnm">Bagi</span></button>
+          <button class="opb" data-op="pow"><span class="opsym">xʸ</span><span class="opnm">Pangkat</span></button>
+          <button class="opb" data-op="sqrt" data-single="1"><span class="opsym">√</span><span
+              class="opnm">Akar</span></button>
+          <button class="opb" data-op="mod"><span class="opsym">%</span><span class="opnm">Modulus</span></button>
+          <button class="opb" data-op="fdiv"><span class="opsym">⌊÷⌋</span><span class="opnm">Floor Div</span></button>
         </div>
-        <button class="calcbtn" id="tcalc">Konversi Suhu</button>
-        <div class="rescard" id="tr"></div>
+        <button class="calcbtn" id="arithcalc"
+          style="width: 100%; margin-top: 10px; margin-bottom: 22px; font-size: 22px; font-weight: 900;">=</button>
+        <div class="rescard" id="ar"></div>
       </div>
-      <!-- Currency -->
-      <div class="subp" id="s-curr">
-        <div class="infobadge">💡 Rate statis per 2025 (referensi)</div>
-        <div class="row2">
-          <div class="igroup"><label>Jumlah</label><input type="number" id="cv" placeholder="Contoh: 100000"/></div>
-          <div class="igroup"><label>Dari Mata Uang</label><select id="cf"><option value="IDR">IDR – Rupiah</option><option value="USD">USD – Dollar AS</option><option value="EUR">EUR – Euro</option><option value="SGD">SGD – Dollar Singapura</option><option value="MYR">MYR – Ringgit Malaysia</option><option value="JPY">JPY – Yen Jepang</option><option value="GBP">GBP – Pound Inggris</option><option value="AUD">AUD – Dollar Australia</option></select></div>
-        </div>
-        <button class="calcbtn" id="ccalc">Konversi Mata Uang</button>
-        <div class="rescard" id="cr"></div>
-      </div>
-      <!-- Factorial -->
-      <div class="subp" id="s-fact">
-        <div class="row2" style="grid-template-columns:1fr">
-          <div class="igroup"><label>n (0–20)</label><input type="number" id="fn" placeholder="Contoh: 10" min="0" max="20" step="1"/></div>
-        </div>
-        <button class="calcbtn" id="fcalc">Hitung Faktorial</button>
-        <div class="rescard" id="fr"></div>
-      </div>
-      <!-- Fibonacci -->
-      <div class="subp" id="s-fib">
-        <div class="row2" style="grid-template-columns:1fr">
-          <div class="igroup"><label>Jumlah Suku (1–50)</label><input type="number" id="fbn" placeholder="Contoh: 10" min="1" max="50" step="1"/></div>
-        </div>
-        <button class="calcbtn" id="fbcalc">Hitung Fibonacci</button>
-        <div class="rescard" id="fbr"></div>
-      </div>
-    </div>
 
-    <!-- HISTORY -->
-    <div class="panel" id="p-hist">
-      <div class="ptitle">Riwayat Perhitungan</div>
-      <div class="pdesc">Klik item untuk melihat detail langkah</div>
-      <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
-        <button class="calcbtn" id="clrHist" style="padding:8px 20px;font-size:12px;margin-bottom:0">🗑 Hapus Semua</button>
+      <!-- LOGIKA -->
+      <div class="panel" id="p-logic">
+        <div class="ptitle">Operator Logika</div>
+        <div class="pdesc">Operasi bitwise pada bilangan bulat</div>
+        <div class="row2">
+          <div class="igroup"><label>Nilai A (Integer)</label><input type="number" id="la" placeholder="Contoh: 12"
+              step="1" /></div>
+          <div class="igroup" id="lbw"><label>Nilai B (Integer)</label><input type="number" id="lb"
+              placeholder="Contoh: 10" step="1" /></div>
+        </div>
+        <div class="opgrid" style="grid-template-columns:repeat(3,1fr)">
+          <button class="opb" data-lop="and"><span class="opsym" style="font-size:13px">AND</span><span class="opnm">A &
+              B</span></button>
+          <button class="opb" data-lop="or"><span class="opsym" style="font-size:13px">OR</span><span class="opnm">A |
+              B</span></button>
+          <button class="opb" data-lop="not" data-single="1"><span class="opsym" style="font-size:13px">NOT</span><span
+              class="opnm">~A</span></button>
+          <button class="opb" data-lop="xor"><span class="opsym" style="font-size:13px">XOR</span><span class="opnm">A ^
+              B</span></button>
+          <button class="opb" data-lop="nand"><span class="opsym" style="font-size:13px">NAND</span><span
+              class="opnm">~(A&B)</span></button>
+          <button class="opb" data-lop="nor"><span class="opsym" style="font-size:13px">NOR</span><span
+              class="opnm">~(A|B)</span></button>
+        </div>
+        <button class="calcbtn" id="logiccalc"
+          style="width: 100%; margin-top: 10px; margin-bottom: 22px; font-size: 22px; font-weight: 900;">=</button>
+        <div class="rescard" id="lr"></div>
       </div>
-      <div class="histlist" id="hl"><div class="empty">🌅<br><br>Belum ada riwayat perhitungan</div></div>
+
+      <!-- TRANSFORMASI -->
+      <div class="panel" id="p-trans">
+        <div class="ptitle">Transformasi Bilangan</div>
+        <div class="pdesc">Konversi basis, suhu, mata uang, faktorial & fibonacci</div>
+        <div class="subtabs">
+          <button class="stab active" data-s="base">⟨⟩ Basis</button>
+          <button class="stab" data-s="temp">🌡 Suhu</button>
+          <button class="stab" data-s="curr">💱 Mata Uang</button>
+          <button class="stab" data-s="fact">! Faktorial</button>
+          <button class="stab" data-s="fib">∿ Fibonacci</button>
+        </div>
+        <!-- Base -->
+        <div class="subp active" id="s-base">
+          <div class="row2">
+            <div class="igroup"><label>Nilai</label><input type="text" id="bv" placeholder="Contoh: 255" /></div>
+            <div class="igroup"><label>Dari Basis</label><select id="bf">
+                <option value="10">Desimal (10)</option>
+                <option value="2">Biner (2)</option>
+                <option value="8">Oktal (8)</option>
+                <option value="16">Heksadesimal (16)</option>
+              </select></div>
+          </div>
+          <button class="calcbtn" id="bcalc">Konversi Semua Basis</button>
+          <div class="rescard" id="br"></div>
+        </div>
+        <!-- Temp -->
+        <div class="subp" id="s-temp">
+          <div class="row2">
+            <div class="igroup"><label>Nilai Suhu</label><input type="number" id="tv" placeholder="Contoh: 100" /></div>
+            <div class="igroup"><label>Dari Satuan</label><select id="tf">
+                <option value="celsius">Celsius (°C)</option>
+                <option value="fahrenheit">Fahrenheit (°F)</option>
+                <option value="kelvin">Kelvin (K)</option>
+                <option value="reamur">Réamur (°Ré)</option>
+              </select></div>
+          </div>
+          <button class="calcbtn" id="tcalc">Konversi Suhu</button>
+          <div class="rescard" id="tr"></div>
+        </div>
+        <!-- Currency -->
+        <div class="subp" id="s-curr">
+          <div class="infobadge">💡 Rate statis per 2025 (referensi)</div>
+          <div class="row2">
+            <div class="igroup"><label>Jumlah</label><input type="number" id="cv" placeholder="Contoh: 100000" /></div>
+            <div class="igroup"><label>Dari Mata Uang</label><select id="cf">
+                <option value="IDR">IDR – Rupiah</option>
+                <option value="USD">USD – Dollar AS</option>
+                <option value="EUR">EUR – Euro</option>
+                <option value="SGD">SGD – Dollar Singapura</option>
+                <option value="MYR">MYR – Ringgit Malaysia</option>
+                <option value="JPY">JPY – Yen Jepang</option>
+                <option value="GBP">GBP – Pound Inggris</option>
+                <option value="AUD">AUD – Dollar Australia</option>
+              </select></div>
+          </div>
+          <button class="calcbtn" id="ccalc">Konversi Mata Uang</button>
+          <div class="rescard" id="cr"></div>
+        </div>
+        <!-- Factorial -->
+        <div class="subp" id="s-fact">
+          <div class="row2" style="grid-template-columns:1fr">
+            <div class="igroup"><label>n (0–20)</label><input type="number" id="fn" placeholder="Contoh: 10" min="0"
+                max="20" step="1" /></div>
+          </div>
+          <button class="calcbtn" id="fcalc">Hitung Faktorial</button>
+          <div class="rescard" id="fr"></div>
+        </div>
+        <!-- Fibonacci -->
+        <div class="subp" id="s-fib">
+          <div class="row2" style="grid-template-columns:1fr">
+            <div class="igroup"><label>Jumlah Suku (1–50)</label><input type="number" id="fbn" placeholder="Contoh: 10"
+                min="1" max="50" step="1" /></div>
+          </div>
+          <button class="calcbtn" id="fbcalc">Hitung Fibonacci</button>
+          <div class="rescard" id="fbr"></div>
+        </div>
+      </div>
+
+      <!-- HISTORY -->
+      <div class="panel" id="p-hist">
+        <div class="ptitle">Riwayat Perhitungan</div>
+        <div class="pdesc">Klik item untuk melihat detail langkah</div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:14px">
+          <button class="calcbtn" id="clrHist" style="padding:8px 20px;font-size:12px;margin-bottom:0">🗑 Hapus
+            Semua</button>
+        </div>
+        <div class="histlist" id="hl">
+          <div class="empty">🌅<br><br>Belum ada riwayat perhitungan</div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
-<div class="toast" id="toast"></div>
+  <div class="toast" id="toast"></div>
 
-<script>
-const history=[];
+  <script>
+    const history = [];
 
-function makeStars(){
-  const c=document.getElementById('stars');
-  for(let i=0;i<40;i++){
-    const d=document.createElement('div');
-    d.className='star';
-    const sz=Math.random()*2+1;
-    d.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-delay:${Math.random()*4}s;animation-duration:${2+Math.random()*3}s;opacity:${0.3+Math.random()*0.7}`;
-    c.appendChild(d);
-  }
-}
-makeStars();
-
-let isLight=false;
-document.getElementById('themeBtn').onclick=()=>{
-  isLight=!isLight;
-  const a=document.getElementById('app');
-  document.getElementById('themeBtn').textContent=isLight?'☀️':'🌙';
-  if(isLight){
-    a.style.background='linear-gradient(160deg,#fff5f0 0%,#ffe8d6 35%,#ffd6c4 60%,#ffe0d0 100%)';
-    document.querySelectorAll('input,select').forEach(e=>{e.style.background='rgba(255,255,255,.9)';e.style.color='#2d1040'});
-    document.querySelectorAll('.ptitle,.logo-t,.hres,.rmain').forEach(e=>{});
-    a.style.color='#2d1040';
-    document.querySelectorAll('.tab,.nav-label,.pdesc,.txts,.stxt,.opnm,.rexpr,.stitle,.bilab').forEach(e=>e.style.color='#6b3fa0');
-  } else {
-    a.style.background='linear-gradient(160deg,#0d0618 0%,#1a0a2e 35%,#2d1040 60%,#1a0a2e 100%)';
-    a.style.color='#fde8d8';
-    document.querySelectorAll('input,select').forEach(e=>{e.style.background='';e.style.color=''});
-  }
-};
-
-document.querySelectorAll('.tab').forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll('.tab,.panel').forEach(e=>e.classList.remove('active'));
-    b.classList.add('active');
-    document.getElementById('p-'+b.dataset.t).classList.add('active');
-    if(b.dataset.t==='hist') renderHist();
-  };
-});
-
-document.querySelectorAll('.stab').forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll('.stab,.subp').forEach(e=>e.classList.remove('active'));
-    b.classList.add('active');
-    document.getElementById('s-'+b.dataset.s).classList.add('active');
-  };
-});
-
-let toastT;
-function toast(msg,type=''){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.className='toast up '+(type==='ok'?'ok':'err');
-  clearTimeout(toastT);toastT=setTimeout(()=>t.className='toast',2800);
-}
-
-function card(el,{expr,main,formula,steps}){
-  el.className='rescard show';
-  el.innerHTML=`<div class="rexpr">${expr}</div><div class="rmain">${main}</div><div class="rform">ƒ ${formula}</div><div class="stitle">📐 Langkah Penyelesaian</div><div class="slist">${steps.map((s,i)=>`<div class="sitem"><span class="snum">${i+1}</span><span class="stxt">${s}</span></div>`).join('')}</div>`;
-}
-
-function addHist(cat,expr,result,formula,steps){
-  history.unshift({cat,expr,result,formula,steps});
-  if(history.length>50)history.pop();
-}
-
-function renderHist(){
-  const hl=document.getElementById('hl');
-  if(!history.length){hl.innerHTML='<div class="empty">🌅<br><br>Belum ada riwayat perhitungan</div>';return;}
-  hl.innerHTML=history.map((h,i)=>`<div class="histitem" data-i="${i}"><div class="hmeta"><span class="hcat">${h.cat}</span><span class="hexpr">${h.expr}</span></div><div class="hres">${String(h.result).length>28?String(h.result).slice(0,28)+'…':h.result}</div><div class="hsteps"><div class="stitle">ƒ ${h.formula}</div><div class="slist">${h.steps.map((s,j)=>`<div class="sitem"><span class="snum">${j+1}</span><span class="stxt">${s}</span></div>`).join('')}</div></div></div>`).join('');
-  hl.querySelectorAll('.histitem').forEach(e=>e.onclick=()=>e.classList.toggle('exp'));
-}
-
-document.getElementById('clrHist').onclick=()=>{history.length=0;renderHist();toast('Riwayat dihapus','ok')};
-
-// ── ARITHMETIC ──
-function fmt(n){return n===Math.floor(n)?String(Math.floor(n)):String(Math.round(n*1e10)/1e10)}
-
-let currentArithOp = null;
-let currentLogicOp = null;
-
-document.querySelectorAll('.opb[data-op]').forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll('.opb[data-op]').forEach(b=>b.classList.remove('sel'));
-    btn.classList.add('sel');
-    currentArithOp = btn.dataset.op;
-    
-    // Smoothly fade/disable Nilai B if single-input operator
-    const isSingle = !!btn.dataset.single;
-    const abw = document.getElementById('abw');
-    if (isSingle) {
-      abw.style.opacity = '0.35';
-      abw.style.pointerEvents = 'none';
-    } else {
-      abw.style.opacity = '1';
-      abw.style.pointerEvents = 'auto';
+    function makeStars() {
+      const c = document.getElementById('stars');
+      for (let i = 0; i < 40; i++) {
+        const d = document.createElement('div');
+        d.className = 'star';
+        const sz = Math.random() * 2 + 1;
+        d.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random() * 100}%;left:${Math.random() * 100}%;animation-delay:${Math.random() * 4}s;animation-duration:${2 + Math.random() * 3}s;opacity:${0.3 + Math.random() * 0.7}`;
+        c.appendChild(d);
+      }
     }
-  };
-});
+    makeStars();
 
-// Select default operator on load
-const defaultArithBtn = document.querySelector('.opb[data-op="add"]');
-if (defaultArithBtn) defaultArithBtn.click();
-
-document.getElementById('arithcalc').onclick=()=>{
-  if(!currentArithOp){toast('Pilih operasi terlebih dahulu!');return;}
-  const btn = document.querySelector(`.opb[data-op="${currentArithOp}"]`);
-  const isSingle = !!btn.dataset.single;
-  
-  const av = document.getElementById('aa').value;
-  const bv = document.getElementById('ab').value;
-  if(av===''&&av!=='0'){toast('Masukkan Nilai A');return;}
-  if(!isSingle&&(bv===''&&bv!=='0')){toast('Masukkan Nilai B');return;}
-  const a = parseFloat(av), b = isSingle ? null : parseFloat(bv);
-  const ar = document.getElementById('ar');
-  
-  fetch('/api/arithmetic', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({a, b, operation: currentArithOp})
-  })
-  .then(r=>r.json())
-  .then(data=>{
-    if(data.error){toast(data.error);return;}
-    addHist('Aritmatika',data.expression,fmt(data.result),data.formula,data.steps);
-    card(ar,{expr:data.expression,main:fmt(data.result),formula:data.formula,steps:data.steps});
-    toast('✓ Berhasil dihitung','ok');
-  })
-  .catch(e=>toast(e.message));
-};
-
-// ── LOGIC ──
-document.querySelectorAll('.opb[data-lop]').forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll('.opb[data-lop]').forEach(b=>b.classList.remove('sel'));
-    btn.classList.add('sel');
-    currentLogicOp = btn.dataset.lop;
-    
-    // Smoothly fade/disable Nilai B if single-input operator
-    const isSingle = !!btn.dataset.single;
-    const lbw = document.getElementById('lbw');
-    if (isSingle) {
-      lbw.style.opacity = '0.35';
-      lbw.style.pointerEvents = 'none';
-    } else {
-      lbw.style.opacity = '1';
-      lbw.style.pointerEvents = 'auto';
-    }
-  };
-});
-
-// Select default operator on load
-const defaultLogicBtn = document.querySelector('.opb[data-lop="and"]');
-if (defaultLogicBtn) defaultLogicBtn.click();
-
-document.getElementById('logiccalc').onclick=()=>{
-  if(!currentLogicOp){toast('Pilih operasi terlebih dahulu!');return;}
-  const btn = document.querySelector(`.opb[data-lop="${currentLogicOp}"]`);
-  const isSingle = !!btn.dataset.single;
-  
-  const av = document.getElementById('la').value;
-  const bv = document.getElementById('lb').value;
-  if(av===''){toast('Masukkan Nilai A');return;}
-  if(!isSingle&&bv===''){toast('Masukkan Nilai B');return;}
-  const a = parseInt(av), b = isSingle ? null : parseInt(bv);
-  const lr = document.getElementById('lr');
-  
-  let expr,formula;
-  if(currentLogicOp==='and'){expr=`${a} AND ${b}`;formula='A AND B = A & B';}
-  else if(currentLogicOp==='or'){expr=`${a} OR ${b}`;formula='A OR B = A | B';}
-  else if(currentLogicOp==='not'){expr=`NOT ${a}`;formula='NOT A = ~A';}
-  else if(currentLogicOp==='xor'){expr=`${a} XOR ${b}`;formula='A XOR B = A ^ B';}
-  else if(currentLogicOp==='nand'){expr=`${a} NAND ${b}`;formula='~(A & B)';}
-  else if(currentLogicOp==='nor'){expr=`${a} NOR ${b}`;formula='~(A | B)';}
-
-  fetch('/api/logic', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({a, b, operation: currentLogicOp})
-  })
-  .then(r=>r.json())
-  .then(data=>{
-    if(data.error){toast(data.error);return;}
-    const binVal = data.binary ? '0b' + data.binary.replace('0b', '').replace('-0b', '-') : '';
-    addHist('Logika',expr,String(data.result),formula,data.steps);
-    card(lr,{expr,main:`${data.result} <span style="font-size:16px;color:#8a6fa0">${binVal}</span>`,formula,steps:data.steps});
-    toast('✓ Berhasil dihitung','ok');
-  })
-  .catch(e=>toast(e.message));
-};
-
-// ── BASE ──
-document.getElementById('bcalc').onclick=()=>{
-  const v=document.getElementById('bv').value.trim();
-  const base=parseInt(document.getElementById('bf').value);
-  if(!v){toast('Masukkan nilai');return;}
-  
-  fetch('/api/base', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({value: v, from_base: base})
-  })
-  .then(r=>r.json())
-  .then(data=>{
-    if(data.error){toast(data.error);return;}
-    const dec=data.decimal, bin=data.binary, oct=data.octal, hex=data.hexadecimal;
-    const steps=[`Input: ${v} (Basis ${base})`,`Konversi ke Desimal: ${dec}`,`Desimal → Biner: ${bin}`,`Desimal → Oktal: ${oct}`,`Desimal → Heks: ${hex}`];
-    const formula='n(basis) → Desimal → Basis lain';
-    addHist('Konversi Basis',`${v} (B${base})`,`Dec:${dec} Bin:${bin} Oct:${oct} Hex:${hex}`,formula,steps);
-    const br=document.getElementById('br');
-    br.className='rescard show';
-    br.innerHTML=`<div class="rform">ƒ ${formula}</div><div class="g2"><div class="bitem"><div class="bilab">Desimal (10)</div><div class="bival">${dec}</div></div><div class="bitem"><div class="bilab">Biner (2)</div><div class="bival">${bin}</div></div><div class="bitem"><div class="bilab">Oktal (8)</div><div class="bival">${oct}</div></div><div class="bitem"><div class="bilab">Heksadesimal (16)</div><div class="bival">${hex}</div></div></div><div class="stitle">📐 Langkah Penyelesaian</div><div class="slist">${steps.map((s,i)=>`<div class="sitem"><span class="snum">${i+1}</span><span class="stxt">${s}</span></div>`).join('')}</div>`;
-    toast('✓ Konversi selesai','ok');
-  })
-  .catch(e=>toast(e.message));
-};
-
-// ── TEMPERATURE ──
-document.getElementById('tcalc').onclick=()=>{
-  const v=parseFloat(document.getElementById('tv').value);
-  const unit=document.getElementById('tf').value;
-  if(isNaN(v)){toast('Masukkan nilai suhu');return;}
-  
-  fetch('/api/temperature', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({value: v, unit})
-  })
-  .then(r=>r.json())
-  .then(data=>{
-    if(data.error){toast(data.error);return;}
-    const res={
-      C: data.result.celsius,
-      F: data.result.fahrenheit,
-      K: data.result.kelvin,
-      Re: data.result.reamur
+    let isLight = false;
+    document.getElementById('themeBtn').onclick = () => {
+      isLight = !isLight;
+      const a = document.getElementById('app');
+      document.getElementById('themeBtn').textContent = isLight ? '☀️' : '🌙';
+      if (isLight) {
+        a.style.background = 'linear-gradient(160deg,#fff5f0 0%,#ffe8d6 35%,#ffd6c4 60%,#ffe0d0 100%)';
+        document.querySelectorAll('input,select').forEach(e => { e.style.background = 'rgba(255,255,255,.9)'; e.style.color = '#2d1040' });
+        document.querySelectorAll('.ptitle,.logo-t,.hres,.rmain').forEach(e => { });
+        a.style.color = '#2d1040';
+        document.querySelectorAll('.tab,.nav-label,.pdesc,.txts,.stxt,.opnm,.rexpr,.stitle,.bilab').forEach(e => e.style.color = '#6b3fa0');
+      } else {
+        a.style.background = 'linear-gradient(160deg,#0d0618 0%,#1a0a2e 35%,#2d1040 60%,#1a0a2e 100%)';
+        a.style.color = '#fde8d8';
+        document.querySelectorAll('input,select').forEach(e => { e.style.background = ''; e.style.color = '' });
+      }
     };
-    const steps=[`Input: ${v}° ${unit.charAt(0).toUpperCase()+unit.slice(1)}`,`Konversi ke Celsius: ${res.C}°C`,`°C → °F: (C × 9/5) + 32 = ${res.F}`,`°C → K: C + 273.15 = ${res.K}`,`°C → °Ré: C × 4/5 = ${res.Re}`];
-    const formula='T(°C) → semua satuan';
-    addHist('Konversi Suhu',`${v}° ${unit}`,`C:${res.C} F:${res.F} K:${res.K}`,formula,steps);
-    const tr=document.getElementById('tr');
-    tr.className='rescard show';
-    tr.innerHTML=`<div class="rform">ƒ ${formula}</div><div class="g2"><div class="bitem"><div class="bilab">Celsius</div><div class="bival">${res.C}°C</div></div><div class="bitem"><div class="bilab">Fahrenheit</div><div class="bival">${res.F}°F</div></div><div class="bitem"><div class="bilab">Kelvin</div><div class="bival">${res.K} K</div></div><div class="bitem"><div class="bilab">Réamur</div><div class="bival">${res.Re}°Ré</div></div></div><div class="stitle">📐 Langkah Penyelesaian</div><div class="slist">${steps.map((s,i)=>`<div class="sitem"><span class="snum">${i+1}</span><span class="stxt">${s}</span></div>`).join('')}</div>`;
-    toast('✓ Konversi selesai','ok');
-  })
-  .catch(e=>toast(e.message));
-};
 
-// ── CURRENCY ──
-const RATES={IDR:1,USD:1/15800,EUR:1/17200,SGD:1/11700,MYR:1/3400,JPY:1/105,GBP:1/20100,AUD:1/10400};
-const FLAGS={IDR:'🇮🇩',USD:'🇺🇸',EUR:'🇪🇺',SGD:'🇸🇬',MYR:'🇲🇾',JPY:'🇯🇵',GBP:'🇬🇧',AUD:'🇦🇺'};
-document.getElementById('ccalc').onclick=()=>{
-  const v=parseFloat(document.getElementById('cv').value);
-  const from=document.getElementById('cf').value;
-  if(isNaN(v)){toast('Masukkan jumlah');return;}
-  
-  fetch('/api/currency', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({value: v, from_currency: from})
-  })
-  .then(r=>r.json())
-  .then(data=>{
-    if(data.error){toast(data.error);return;}
-    const idr=data.idr_value;
-    const items=Object.entries(data.result).map(([code,val])=>{
-      const disp=val>=1?val.toLocaleString('id-ID',{maximumFractionDigits:2}):val.toFixed(6);
-      return `<div class="citem"><span class="ccod">${FLAGS[code]} ${code}</span><span class="cval">${disp}</span></div>`;
-    }).join('');
-    const steps=[`Input: ${v} ${from}`,`Konversi ke IDR: ${Math.round(idr).toLocaleString('id-ID')}`,`Terapkan rate ke semua mata uang`];
-    const formula='Nilai(IDR) × Rate(IDR→X)';
-    addHist('Konversi Mata Uang',`${v} ${from}`,`IDR:${Math.round(idr).toLocaleString()}`,formula,steps);
-    const cr=document.getElementById('cr');
-    cr.className='rescard show';
-    cr.innerHTML=`<div class="rform">ƒ ${formula}</div><div class="g2">${items}</div><div class="stitle">📐 Langkah Penyelesaian</div><div class="slist">${steps.map((s,i)=>`<div class="sitem"><span class="snum">${i+1}</span><span class="stxt">${s}</span></div>`).join('')}</div>`;
-    toast('✓ Konversi selesai','ok');
-  })
-  .catch(e=>toast(e.message));
-};
+    document.querySelectorAll('.tab').forEach(b => {
+      b.onclick = () => {
+        document.querySelectorAll('.tab,.panel').forEach(e => e.classList.remove('active'));
+        b.classList.add('active');
+        document.getElementById('p-' + b.dataset.t).classList.add('active');
+        if (b.dataset.t === 'hist') renderHist();
+      };
+    });
 
-// ── FACTORIAL ──
-document.getElementById('fcalc').onclick=()=>{
-  const n=parseInt(document.getElementById('fn').value);
-  if(isNaN(n)||n<0||n>20){toast('n harus 0–20');return;}
-  
-  fetch('/api/factorial', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({n})
-  })
-  .then(r=>r.json())
-  .then(data=>{
-    if(data.error){toast(data.error);return;}
-    const res=data.result;
-    const parts=Array.from({length:n},(_,i)=>n-i).join(' × ')||'1';
-    const steps=[`n! = n × (n-1) × … × 1`,`${n}! = ${parts}`,`= ${res}`];
-    const formula='n! = n × (n−1) × … × 1';
-    addHist('Faktorial',`${n}!`,String(res),formula,steps);
-    card(document.getElementById('fr'),{expr:`${n}!`,main:res.toLocaleString(),formula,steps});
-    toast('✓ Faktorial dihitung','ok');
-  })
-  .catch(e=>toast(e.message));
-};
+    document.querySelectorAll('.stab').forEach(b => {
+      b.onclick = () => {
+        document.querySelectorAll('.stab,.subp').forEach(e => e.classList.remove('active'));
+        b.classList.add('active');
+        document.getElementById('s-' + b.dataset.s).classList.add('active');
+      };
+    });
 
-// ── FIBONACCI ──
-document.getElementById('fbcalc').onclick=()=>{
-  const n=parseInt(document.getElementById('fbn').value);
-  if(isNaN(n)||n<1||n>50){toast('Masukkan 1–50');return;}
-  
-  fetch('/api/fibonacci', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({n})
-  })
-  .then(r=>r.json())
-  .then(data=>{
-    if(data.error){toast(data.error);return;}
-    const s=data.sequence;
-    const steps=[`F(1)=0, F(2)=1`,`F(n) = F(n-1) + F(n-2)`,`Hitung ${n} suku pertama:`,`Deret: ${s.join(', ')}`];
-    const formula='F(n) = F(n−1) + F(n−2)';
-    addHist('Fibonacci',`Fibonacci(${n} suku)`,String(s[s.length-1]),formula,steps);
-    const fbr=document.getElementById('fbr');
-    fbr.className='rescard show';
-    fbr.innerHTML=`<div class="rmain" style="font-size:28px">F(${n}) = ${s[s.length-1]}</div><div class="rform">ƒ ${formula}</div><div style="margin-bottom:10px;font-size:10px;color:#8a6fa0;text-transform:uppercase;letter-spacing:.1em">Deret Lengkap</div><div class="fibseq">${s.map(v=>`<span class="fibchip">${v}</span>`).join('')}</div><div class="stitle">📐 Langkah Penyelesaian</div><div class="slist">${steps.map((st,i)=>`<div class="sitem"><span class="snum">${i+1}</span><span class="stxt">${st}</span></div>`).join('')}</div>`;
-    toast('✓ Fibonacci dihitung','ok');
-  })
-  .catch(e=>toast(e.message));
-};
-</script>
+    let toastT;
+    function toast(msg, type = '') {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.className = 'toast up ' + (type === 'ok' ? 'ok' : 'err');
+      clearTimeout(toastT); toastT = setTimeout(() => t.className = 'toast', 2800);
+    }
+
+    function card(el, { expr, main, formula, steps }) {
+      el.className = 'rescard show';
+      el.innerHTML = `<div class="rexpr">${expr}</div><div class="rmain">${main}</div><div class="rform">ƒ ${formula}</div><div class="stitle">📐 Langkah Penyelesaian</div><div class="slist">${steps.map((s, i) => `<div class="sitem"><span class="snum">${i + 1}</span><span class="stxt">${s}</span></div>`).join('')}</div>`;
+    }
+
+    function addHist(cat, expr, result, formula, steps) {
+      history.unshift({ cat, expr, result, formula, steps });
+      if (history.length > 50) history.pop();
+    }
+
+    function renderHist() {
+      const hl = document.getElementById('hl');
+      if (!history.length) { hl.innerHTML = '<div class="empty">🌅<br><br>Belum ada riwayat perhitungan</div>'; return; }
+      hl.innerHTML = history.map((h, i) => `<div class="histitem" data-i="${i}"><div class="hmeta"><span class="hcat">${h.cat}</span><span class="hexpr">${h.expr}</span></div><div class="hres">${String(h.result).length > 28 ? String(h.result).slice(0, 28) + '…' : h.result}</div><div class="hsteps"><div class="stitle">ƒ ${h.formula}</div><div class="slist">${h.steps.map((s, j) => `<div class="sitem"><span class="snum">${j + 1}</span><span class="stxt">${s}</span></div>`).join('')}</div></div></div>`).join('');
+      hl.querySelectorAll('.histitem').forEach(e => e.onclick = () => e.classList.toggle('exp'));
+    }
+
+    document.getElementById('clrHist').onclick = () => { history.length = 0; renderHist(); toast('Riwayat dihapus', 'ok') };
+
+    // ── ARITHMETIC ──
+    function fmt(n) { return n === Math.floor(n) ? String(Math.floor(n)) : String(Math.round(n * 1e10) / 1e10) }
+
+    let currentArithOp = null;
+    let currentLogicOp = null;
+
+    document.querySelectorAll('.opb[data-op]').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('.opb[data-op]').forEach(b => b.classList.remove('sel'));
+        btn.classList.add('sel');
+        currentArithOp = btn.dataset.op;
+
+        // Smoothly fade/disable Nilai B if single-input operator
+        const isSingle = !!btn.dataset.single;
+        const abw = document.getElementById('abw');
+        if (isSingle) {
+          abw.style.opacity = '0.35';
+          abw.style.pointerEvents = 'none';
+        } else {
+          abw.style.opacity = '1';
+          abw.style.pointerEvents = 'auto';
+        }
+      };
+    });
+
+    // Select default operator on load
+    const defaultArithBtn = document.querySelector('.opb[data-op="add"]');
+    if (defaultArithBtn) defaultArithBtn.click();
+
+    document.getElementById('arithcalc').onclick = () => {
+      if (!currentArithOp) { toast('Pilih operasi terlebih dahulu!'); return; }
+      const btn = document.querySelector(`.opb[data-op="${currentArithOp}"]`);
+      const isSingle = !!btn.dataset.single;
+
+      const av = document.getElementById('aa').value;
+      const bv = document.getElementById('ab').value;
+      if (av === '' && av !== '0') { toast('Masukkan Nilai A'); return; }
+      if (!isSingle && (bv === '' && bv !== '0')) { toast('Masukkan Nilai B'); return; }
+      const a = parseFloat(av), b = isSingle ? null : parseFloat(bv);
+      const ar = document.getElementById('ar');
+
+      fetch('/api/arithmetic', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ a, b, operation: currentArithOp })
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.error) { toast(data.error); return; }
+          addHist('Aritmatika', data.expression, fmt(data.result), data.formula, data.steps);
+          card(ar, { expr: data.expression, main: fmt(data.result), formula: data.formula, steps: data.steps });
+          toast('✓ Berhasil dihitung', 'ok');
+        })
+        .catch(e => toast(e.message));
+    };
+
+    // ── LOGIC ──
+    document.querySelectorAll('.opb[data-lop]').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('.opb[data-lop]').forEach(b => b.classList.remove('sel'));
+        btn.classList.add('sel');
+        currentLogicOp = btn.dataset.lop;
+
+        // Smoothly fade/disable Nilai B if single-input operator
+        const isSingle = !!btn.dataset.single;
+        const lbw = document.getElementById('lbw');
+        if (isSingle) {
+          lbw.style.opacity = '0.35';
+          lbw.style.pointerEvents = 'none';
+        } else {
+          lbw.style.opacity = '1';
+          lbw.style.pointerEvents = 'auto';
+        }
+      };
+    });
+
+    // Select default operator on load
+    const defaultLogicBtn = document.querySelector('.opb[data-lop="and"]');
+    if (defaultLogicBtn) defaultLogicBtn.click();
+
+    document.getElementById('logiccalc').onclick = () => {
+      if (!currentLogicOp) { toast('Pilih operasi terlebih dahulu!'); return; }
+      const btn = document.querySelector(`.opb[data-lop="${currentLogicOp}"]`);
+      const isSingle = !!btn.dataset.single;
+
+      const av = document.getElementById('la').value;
+      const bv = document.getElementById('lb').value;
+      if (av === '') { toast('Masukkan Nilai A'); return; }
+      if (!isSingle && bv === '') { toast('Masukkan Nilai B'); return; }
+      const a = parseInt(av), b = isSingle ? null : parseInt(bv);
+      const lr = document.getElementById('lr');
+
+      let expr, formula;
+      if (currentLogicOp === 'and') { expr = `${a} AND ${b}`; formula = 'A AND B = A & B'; }
+      else if (currentLogicOp === 'or') { expr = `${a} OR ${b}`; formula = 'A OR B = A | B'; }
+      else if (currentLogicOp === 'not') { expr = `NOT ${a}`; formula = 'NOT A = ~A'; }
+      else if (currentLogicOp === 'xor') { expr = `${a} XOR ${b}`; formula = 'A XOR B = A ^ B'; }
+      else if (currentLogicOp === 'nand') { expr = `${a} NAND ${b}`; formula = '~(A & B)'; }
+      else if (currentLogicOp === 'nor') { expr = `${a} NOR ${b}`; formula = '~(A | B)'; }
+
+      fetch('/api/logic', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ a, b, operation: currentLogicOp })
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.error) { toast(data.error); return; }
+          const binVal = data.binary ? '0b' + data.binary.replace('0b', '').replace('-0b', '-') : '';
+          addHist('Logika', expr, String(data.result), formula, data.steps);
+          card(lr, { expr, main: `${data.result} <span style="font-size:16px;color:#8a6fa0">${binVal}</span>`, formula, steps: data.steps });
+          toast('✓ Berhasil dihitung', 'ok');
+        })
+        .catch(e => toast(e.message));
+    };
+
+    // ── BASE ──
+    document.getElementById('bcalc').onclick = () => {
+      const v = document.getElementById('bv').value.trim();
+      const base = parseInt(document.getElementById('bf').value);
+      if (!v) { toast('Masukkan nilai'); return; }
+
+      fetch('/api/base', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ value: v, from_base: base })
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.error) { toast(data.error); return; }
+          const dec = data.decimal, bin = data.binary, oct = data.octal, hex = data.hexadecimal;
+          const steps = [`Input: ${v} (Basis ${base})`, `Konversi ke Desimal: ${dec}`, `Desimal → Biner: ${bin}`, `Desimal → Oktal: ${oct}`, `Desimal → Heks: ${hex}`];
+          const formula = 'n(basis) → Desimal → Basis lain';
+          addHist('Konversi Basis', `${v} (B${base})`, `Dec:${dec} Bin:${bin} Oct:${oct} Hex:${hex}`, formula, steps);
+          const br = document.getElementById('br');
+          br.className = 'rescard show';
+          br.innerHTML = `<div class="rform">ƒ ${formula}</div><div class="g2"><div class="bitem"><div class="bilab">Desimal (10)</div><div class="bival">${dec}</div></div><div class="bitem"><div class="bilab">Biner (2)</div><div class="bival">${bin}</div></div><div class="bitem"><div class="bilab">Oktal (8)</div><div class="bival">${oct}</div></div><div class="bitem"><div class="bilab">Heksadesimal (16)</div><div class="bival">${hex}</div></div></div><div class="stitle">📐 Langkah Penyelesaian</div><div class="slist">${steps.map((s, i) => `<div class="sitem"><span class="snum">${i + 1}</span><span class="stxt">${s}</span></div>`).join('')}</div>`;
+          toast('✓ Konversi selesai', 'ok');
+        })
+        .catch(e => toast(e.message));
+    };
+
+    // ── TEMPERATURE ──
+    document.getElementById('tcalc').onclick = () => {
+      const v = parseFloat(document.getElementById('tv').value);
+      const unit = document.getElementById('tf').value;
+      if (isNaN(v)) { toast('Masukkan nilai suhu'); return; }
+
+      fetch('/api/temperature', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ value: v, unit })
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.error) { toast(data.error); return; }
+          const res = {
+            C: data.result.celsius,
+            F: data.result.fahrenheit,
+            K: data.result.kelvin,
+            Re: data.result.reamur
+          };
+          const steps = [`Input: ${v}° ${unit.charAt(0).toUpperCase() + unit.slice(1)}`, `Konversi ke Celsius: ${res.C}°C`, `°C → °F: (C × 9/5) + 32 = ${res.F}`, `°C → K: C + 273.15 = ${res.K}`, `°C → °Ré: C × 4/5 = ${res.Re}`];
+          const formula = 'T(°C) → semua satuan';
+          addHist('Konversi Suhu', `${v}° ${unit}`, `C:${res.C} F:${res.F} K:${res.K}`, formula, steps);
+          const tr = document.getElementById('tr');
+          tr.className = 'rescard show';
+          tr.innerHTML = `<div class="rform">ƒ ${formula}</div><div class="g2"><div class="bitem"><div class="bilab">Celsius</div><div class="bival">${res.C}°C</div></div><div class="bitem"><div class="bilab">Fahrenheit</div><div class="bival">${res.F}°F</div></div><div class="bitem"><div class="bilab">Kelvin</div><div class="bival">${res.K} K</div></div><div class="bitem"><div class="bilab">Réamur</div><div class="bival">${res.Re}°Ré</div></div></div><div class="stitle">📐 Langkah Penyelesaian</div><div class="slist">${steps.map((s, i) => `<div class="sitem"><span class="snum">${i + 1}</span><span class="stxt">${s}</span></div>`).join('')}</div>`;
+          toast('✓ Konversi selesai', 'ok');
+        })
+        .catch(e => toast(e.message));
+    };
+
+    // ── CURRENCY ──
+    const RATES = { IDR: 1, USD: 1 / 15800, EUR: 1 / 17200, SGD: 1 / 11700, MYR: 1 / 3400, JPY: 1 / 105, GBP: 1 / 20100, AUD: 1 / 10400 };
+    const FLAGS = { IDR: '🇮🇩', USD: '🇺🇸', EUR: '🇪🇺', SGD: '🇸🇬', MYR: '🇲🇾', JPY: '🇯🇵', GBP: '🇬🇧', AUD: '🇦🇺' };
+    document.getElementById('ccalc').onclick = () => {
+      const v = parseFloat(document.getElementById('cv').value);
+      const from = document.getElementById('cf').value;
+      if (isNaN(v)) { toast('Masukkan jumlah'); return; }
+
+      fetch('/api/currency', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ value: v, from_currency: from })
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.error) { toast(data.error); return; }
+          const idr = data.idr_value;
+          const items = Object.entries(data.result).map(([code, val]) => {
+            const disp = val >= 1 ? val.toLocaleString('id-ID', { maximumFractionDigits: 2 }) : val.toFixed(6);
+            return `<div class="citem"><span class="ccod">${FLAGS[code]} ${code}</span><span class="cval">${disp}</span></div>`;
+          }).join('');
+          const steps = [`Input: ${v} ${from}`, `Konversi ke IDR: ${Math.round(idr).toLocaleString('id-ID')}`, `Terapkan rate ke semua mata uang`];
+          const formula = 'Nilai(IDR) × Rate(IDR→X)';
+          addHist('Konversi Mata Uang', `${v} ${from}`, `IDR:${Math.round(idr).toLocaleString()}`, formula, steps);
+          const cr = document.getElementById('cr');
+          cr.className = 'rescard show';
+          cr.innerHTML = `<div class="rform">ƒ ${formula}</div><div class="g2">${items}</div><div class="stitle">📐 Langkah Penyelesaian</div><div class="slist">${steps.map((s, i) => `<div class="sitem"><span class="snum">${i + 1}</span><span class="stxt">${s}</span></div>`).join('')}</div>`;
+          toast('✓ Konversi selesai', 'ok');
+        })
+        .catch(e => toast(e.message));
+    };
+
+    // ── FACTORIAL ──
+    document.getElementById('fcalc').onclick = () => {
+      const n = parseInt(document.getElementById('fn').value);
+      if (isNaN(n) || n < 0 || n > 20) { toast('n harus 0–20'); return; }
+
+      fetch('/api/factorial', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ n })
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.error) { toast(data.error); return; }
+          const res = data.result;
+          const parts = Array.from({ length: n }, (_, i) => n - i).join(' × ') || '1';
+          const steps = [`n! = n × (n-1) × … × 1`, `${n}! = ${parts}`, `= ${res}`];
+          const formula = 'n! = n × (n−1) × … × 1';
+          addHist('Faktorial', `${n}!`, String(res), formula, steps);
+          card(document.getElementById('fr'), { expr: `${n}!`, main: res.toLocaleString(), formula, steps });
+          toast('✓ Faktorial dihitung', 'ok');
+        })
+        .catch(e => toast(e.message));
+    };
+
+    // ── FIBONACCI ──
+    document.getElementById('fbcalc').onclick = () => {
+      const n = parseInt(document.getElementById('fbn').value);
+      if (isNaN(n) || n < 1 || n > 50) { toast('Masukkan 1–50'); return; }
+
+      fetch('/api/fibonacci', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ n })
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.error) { toast(data.error); return; }
+          const s = data.sequence;
+          const steps = [`F(1)=0, F(2)=1`, `F(n) = F(n-1) + F(n-2)`, `Hitung ${n} suku pertama:`, `Deret: ${s.join(', ')}`];
+          const formula = 'F(n) = F(n−1) + F(n−2)';
+          addHist('Fibonacci', `Fibonacci(${n} suku)`, String(s[s.length - 1]), formula, steps);
+          const fbr = document.getElementById('fbr');
+          fbr.className = 'rescard show';
+          fbr.innerHTML = `<div class="rmain" style="font-size:28px">F(${n}) = ${s[s.length - 1]}</div><div class="rform">ƒ ${formula}</div><div style="margin-bottom:10px;font-size:10px;color:#8a6fa0;text-transform:uppercase;letter-spacing:.1em">Deret Lengkap</div><div class="fibseq">${s.map(v => `<span class="fibchip">${v}</span>`).join('')}</div><div class="stitle">📐 Langkah Penyelesaian</div><div class="slist">${steps.map((st, i) => `<div class="sitem"><span class="snum">${i + 1}</span><span class="stxt">${st}</span></div>`).join('')}</div>`;
+          toast('✓ Fibonacci dihitung', 'ok');
+        })
+        .catch(e => toast(e.message));
+    };
+  </script>
 </body>
+
 </html>
